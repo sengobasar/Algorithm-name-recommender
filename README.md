@@ -1,16 +1,52 @@
 <img width="1897" height="865" alt="image" src="https://github.com/user-attachments/assets/5005a24d-712f-4f76-92c1-66ee1fcaaf43" />
 <img width="1903" height="882" alt="image" src="https://github.com/user-attachments/assets/962ded5a-27f8-4cc3-8aa0-88934443cedc" />
 
-🚀 Intelligent ML Algorithm Recommender System
+🚀 Intelligent ML Algorithm Recommender (Streamlit App)
 
-A fully automated Machine Learning pipeline that analyzes any dataset, preprocesses it, tests multiple algorithms, compares performance, and recommends the best ML model — all without manual trial-and-error.
+A fully automated Machine Learning analysis web application built using Streamlit, capable of:
 
-This system is designed to help beginners, students, and professionals quickly determine the most suitable algorithm for classification or regression problems.
+loading messy CSV/Excel files
 
-🌟 Key Features
-✅ Automatic Problem Detection
+repairing broken data
 
-Identifies whether the dataset is for:
+detecting problem type
+
+performing smart preprocessing
+
+training multiple ML models
+
+selecting the best algorithm
+
+generating visualizations
+
+providing detailed logs
+
+optional Auto EDA (ydata-profiling)
+
+This system runs end-to-end ML with one click.
+
+🌟 Features
+🔍 1. Super-Robust Dataset Loader
+
+Handles:
+
+Damaged CSV files
+
+Encodings (UTF-8, Latin-1, CP1252, ISO-8859-1)
+
+Unknown delimiters (, ; | \t space)
+
+Binary-file detection
+
+Single-column CSV splitting
+
+Auto-cleaning of index columns
+
+Automatic data repairs
+
+🤖 2. Problem Type Detection
+
+Automatically detects whether your dataset is:
 
 Binary Classification
 
@@ -18,19 +54,25 @@ Multiclass Classification
 
 Regression
 
-✅ Smart Preprocessing
+🧠 3. Intelligent Preprocessing
 
-Automatic missing value handling
+Missing value imputation
 
-Categorical encoding (OneHot / Label Encoding)
+LabelEncoding / OneHotEncoding
 
-Feature scaling
+StandardScaler / MinMaxScaler (auto selected)
 
-Automatic feature selection (for high dimensional data)
+Variance threshold (drops constant features)
 
-✅ Multi-Algorithm Training
+Optional feature selection
 
-Evaluates a curated set of top-performing algorithms:
+Categorical + Numerical pipeline building
+
+⚙️ 4. Multi-Model Training
+
+Trains multiple algorithms depending on problem type:
+
+Classification:
 
 Logistic Regression
 
@@ -42,100 +84,159 @@ Naive Bayes
 
 SVM
 
-XGBoost
+KNN
 
-LightGBM
+AdaBoost
 
-Linear Regression / Ridge / Lasso (for regression)
+Regression:
 
-✅ Adaptive Metrics
+Linear Regression
 
-Automatically picks the right evaluation metrics:
+Random Forest Regressor
 
-Accuracy, Precision, Recall, F1, AUC (Classification)
+Decision Tree Regressor
 
-R², RMSE, MAE (Regression)
+Models are auto-selected based on:
 
-✅ Rich Visualizations
+dataset size
 
-Generates:
+class balance
 
-Performance comparison bar charts
+feature count
+
+📊 5. Adaptive Metrics
+
+Accuracy, F1, AUC (classification)
+
+R², RMSE, MAE (regression)
+
+📈 6. Visualizations
+
+Performance bar charts
 
 Confusion matrix
 
 ROC curves
 
-Regression scatter & residual plots
+Regression error plots
 
-✅ Auto EDA (Optional)
+Multi-model comparison
 
-Generates a full HTML report using ydata-profiling.
+Auto-generated Streamlit Plotly graphs
+
+🧾 7. Optional Auto EDA
+
+Generates full HTML profiling report (if installed):
+
+pip install ydata-profiling
+
+🖥 8. Full Streamlit UI
+
+Upload CSV/Excel
+
+Auto-detect target column
+
+Run entire analysis
+
+Download comparison results
+
+View logs
+
+Beautiful UI with custom CSS
 
 📦 Installation
+1. Clone the repository
 git clone https://github.com/sengobasar/Algorithm-name-recommender.git
 cd Algorithm-name-recommender
 
-Create a virtual environment
+2. Create a virtual environment
 python -m venv venv
-venv\Scripts\activate   # Windows
+venv\Scripts\activate     # Windows
+# or
 source venv/bin/activate  # Mac/Linux
 
-Install dependencies
+3. Install dependencies
 pip install -r requirements.txt
 
-🧠 Usage Example
-Python Script
-from ml_recommender import IntelligentMLRecommendationSystem
+▶️ Run the Streamlit App
+streamlit run app.py
 
-recommender = IntelligentMLRecommendationSystem()
-best_model, results = recommender.run_automated_ml(
-    file_path="your_dataset.csv",
-    target_column="target",
-    generate_eda=False
-)
+📁 Project Structure
+Algorithm-name-recommender/
+│
+├── app.py                     # MAIN Streamlit UI Application
+├── ml_recommender.py          # Complete ML pipeline engine
+├── ui_utils.py                # Console UI utilities
+├── requirements.txt           # Dependencies
+├── iris_demo.csv              # Example dataset
+└── venv/ (optional)           # Local environment
 
-Command-Line Usage
-python ml_recommender.py --file data.csv --target target_column
+🧠 How It Works
+1️⃣ Upload your dataset
 
-📊 Example (Iris Dataset)
-from sklearn.datasets import load_iris
-import pandas as pd
+CSV or Excel — even corrupted or weird files.
 
-iris = load_iris()
-df = pd.DataFrame(iris.data, columns=iris.feature_names)
-df["target"] = iris.target
-df.to_csv("iris.csv", index=False)
+2️⃣ The engine does:
 
-from ml_recommender import IntelligentMLRecommendationSystem
-recommender = IntelligentMLRecommendationSystem()
-recommender.run_automated_ml("iris.csv", "target", generate_eda=False)
+Encoding detection
 
-📁 Output Generated
+Delimiter guessing
 
-When you run the system, you get:
+Cleaning
 
-✔ Best algorithm (e.g., Random Forest)
+Splitting single-column CSV
 
-✔ Performance comparison table
+Problem type detection
 
-✔ Model evaluation plots
+3️⃣ Builds preprocessing pipeline
+4️⃣ Trains multiple ML models
+5️⃣ Picks best algorithm
+6️⃣ Shows:
 
-✔ Saved best model (best_model.pkl)
+Results
 
-✔ Optional EDA report (eda_report_*.html)
+Visualizations
 
-🛠 Customization
+Logs
 
-You can easily extend the system by editing:
+Downloadable CSV
 
-select_algorithms_by_problem_type → add/remove ML models
+Model scores
 
-create_intelligent_preprocessing_pipeline → modify preprocessing
+🎯 Outputs You Get
 
-create_*_plots → add new visualizations
+Best algorithm
+
+Primary metric (Accuracy / F1 / R²)
+
+Comparison table
+
+Visual analysis charts
+
+Optional HTML EDA report
+
+Clean console logs
+
+Downloadable CSV of results
+
+🔧 Requirements
+
+All dependencies are in requirements.txt.
+Install using:
+
+pip install -r requirements.txt
+
+
+Optional:
+
+pip install ydata-profiling
+pip install tpot
 
 🤝 Contributing
 
-Pull requests are welcome!
+Pull requests welcome.
+
+📝 License
+
+MIT License.
 If you'd like to improve the model selection, add algorithms, or enhance visualizations — feel free.
