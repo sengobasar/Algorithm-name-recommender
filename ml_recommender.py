@@ -6,27 +6,33 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
+import os
+import sys
+
+# Add the parent directory to path to allow importing ui_utils
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from ui_utils import ConsoleUI, MessageType
+
 warnings.filterwarnings('ignore')
 
-# Core ML libraries
 from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold, KFold
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
-from sklearn.feature_selection import SelectKBest, f_classif, f_regression, VarianceThreshold
-
-# Algorithms
-from sklearn.linear_model import LogisticRegression, LinearRegression, Ridge
+from sklearn.feature_selection import SelectKBest, f_classif
+from sklearn.ensemble import (
+    RandomForestClassifier, RandomForestRegressor,
+    GradientBoostingClassifier, GradientBoostingRegressor,
+    AdaBoostClassifier, AdaBoostRegressor
+)
+from sklearn.linear_model import LogisticRegression, LinearRegression, Ridge, Lasso, ElasticNet
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from sklearn.svm import SVC, SVR
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
+from sklearn.svm import SVC, SVR
 from sklearn.naive_bayes import GaussianNB
-from sklearn.cluster import KMeans, DBSCAN
 import xgboost as xgb
-
-# Metrics - Problem Type Specific
+from lightgbm import LGBMClassifier, LGBMRegressor
 from sklearn.metrics import (
     # Classification metrics
     accuracy_score, precision_score, recall_score, f1_score, 
@@ -76,32 +82,42 @@ class IntelligentMLRecommendationSystem:
         self.evaluation_results = {}
         self.profile_report = None
         
-        print("🚀 INTELLIGENT ML RECOMMENDATION SYSTEM")
-        print("=" * 60)
-        print("✅ Auto EDA • Smart Preprocessing • Adaptive Metrics")
-        print("✅ Multi-Algorithm Training • Professional Visualization")
+        ConsoleUI.print_message("INTELLIGENT ML RECOMMENDATION SYSTEM", MessageType.HEADER)
+        ConsoleUI.print_message("Auto EDA • Smart Preprocessing • Adaptive Metrics", MessageType.INFO)
+        ConsoleUI.print_message("Multi-Algorithm Training • Professional Visualization", MessageType.INFO)
     
     def load_and_analyze_dataset(self, file_path, target_column=None):
         """
         STEP 1: Load dataset and perform comprehensive auto EDA
         """
-        print("\n📁 STEP 1: LOADING & ANALYZING DATASET")
-        print("=" * 50)
+        ConsoleUI.print_message("STEP 1: LOADING & ANALYZING DATASET", MessageType.STEP)
         
         # Load dataset
-        if file_path.endswith('.csv'):
-            self.df = pd.read_csv(file_path)
-        elif file_path.endswith(('.xlsx', '.xls')):
-            self.df = pd.read_excel(file_path)
-        else:
-            raise ValueError("Unsupported file format. Use CSV or Excel.")
-        
-        print(f"✅ Dataset loaded: {self.df.shape[0]} samples, {self.df.shape[1]} features")
+        try:
+            if file_path.endswith('.csv'):
+                self.df = pd.read_csv(file_path)
+            elif file_path.endswith(('.xlsx', '.xls')):
+                self.df = pd.read_excel(file_path)
+            else:
+                raise ValueError("Unsupported file format. Use CSV or Excel.")
+            
+            ConsoleUI.print_message(
+                f"Dataset loaded: {self.df.shape[0]:,} samples, {self.df.shape[1]} features", 
+                MessageType.SUCCESS
+            )
+            
+        except Exception as e:
+            error_msg = f"Failed to load dataset: {str(e)}"
+            ConsoleUI.print_message(error_msg, MessageType.ERROR)
+            raise
         
         # Auto-detect target column if not specified
         if target_column is None:
             target_column = self.df.columns[-1]  # Assume last column is target
-            print(f"🎯 Auto-detected target column: '{target_column}'")
+            ConsoleUI.print_message(
+                f"Auto-detected target column: '{target_column}'", 
+                MessageType.INFO
+            )
         
         # Separate features and target
         self.X = self.df.drop(columns=[target_column])
@@ -202,13 +218,19 @@ class IntelligentMLRecommendationSystem:
         if self.dataset_info['target_type'] == 'categorical':
             if self.dataset_info['n_classes'] == 2:
                 self.problem_type = 'binary_classification'
-                print(f"🎯 Problem Type: BINARY CLASSIFICATION ({self.dataset_info['n_classes']} classes)")
+                ConsoleUI.print_message(
+                    f"Problem Type: BINARY CLASSIFICATION ({self.dataset_info['n_classes']} classes)",
+                    MessageType.INFO
+                )
             else:
                 self.problem_type = 'multiclass_classification'
-                print(f"🎯 Problem Type: MULTICLASS CLASSIFICATION ({self.dataset_info['n_classes']} classes)")
+                ConsoleUI.print_message(
+                    f"Problem Type: MULTICLASS CLASSIFICATION ({self.dataset_info['n_classes']} classes)",
+                    MessageType.INFO
+                )
         else:
             self.problem_type = 'regression'
-            print(f"🎯 Problem Type: REGRESSION (continuous target)")
+            ConsoleUI.print_message("Problem Type: REGRESSION (continuous target)", MessageType.INFO)
         
         self.dataset_info['problem_type'] = self.problem_type
     
@@ -252,35 +274,49 @@ class IntelligentMLRecommendationSystem:
         self.dataset_info['recommendations'] = recommendations
         
         if quality_issues:
-            print(f"\n⚠️  Data Quality Issues:")
+            ConsoleUI.print_message("Data Quality Issues:", MessageType.WARNING)
             for issue in quality_issues:
-                print(f"   • {issue}")
-            print(f"💡 Recommendations:")
+                ConsoleUI.print_message(issue, MessageType.RESULT)
+            
+            ConsoleUI.print_message("Recommendations:", MessageType.INFO)
             for rec in recommendations:
-                print(f"   • {rec}")
+                ConsoleUI.print_message(rec, MessageType.RESULT)
     
     def generate_auto_eda_report(self):
         """Generate comprehensive EDA report (optional)"""
         
         if not HAS_PROFILING:
-            print("⚠️ ydata-profiling not available. Skipping detailed EDA report.")
+            ConsoleUI.print_message(
+                "ydata-profiling not available. Install with: pip install ydata-profiling",
+                MessageType.WARNING
+            )
             return
         
-        print("\n📋 GENERATING AUTO EDA REPORT...")
+        ConsoleUI.print_message("GENERATING AUTO EDA REPORT...", MessageType.INFO)
         
-        # Generate profile report
-        self.profile_report = ProfileReport(
-            self.df,
-            title="Automated Dataset Analysis Report",
-            explorative=True,
-            minimal=False,
-            samples={"head": 5, "tail": 5}
-        )
-        
-        # Save report
-        report_filename = f"eda_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
-        self.profile_report.to_file(report_filename)
-        print(f"✅ Detailed EDA report saved: {report_filename}")
+        try:
+            # Generate profile report
+            self.profile_report = ProfileReport(
+                self.df,
+                title="Automated Dataset Analysis Report",
+                explorative=True,
+                minimal=False,
+                samples={"head": 5, "tail": 5}
+            )
+            
+            # Save report
+            report_filename = f"eda_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
+            self.profile_report.to_file(report_filename)
+            ConsoleUI.print_message(
+                f"Detailed EDA report saved: {report_filename}",
+                MessageType.SUCCESS
+            )
+            return report_filename
+            
+        except Exception as e:
+            error_msg = f"Failed to generate EDA report: {str(e)}"
+            ConsoleUI.print_message(error_msg, MessageType.ERROR)
+            return None
     
     def create_intelligent_preprocessing_pipeline(self):
         """
@@ -361,72 +397,120 @@ class IntelligentMLRecommendationSystem:
         """
         STEP 3: Select appropriate algorithms based on problem type and dataset characteristics
         """
-        print(f"\n🤖 STEP 3: SELECTING ALGORITHMS FOR {self.problem_type.upper()}")
-        print("=" * 50)
+        ConsoleUI.print_message(
+            f"STEP 3: SELECTING ALGORITHMS FOR {self.problem_type.upper()}", 
+            MessageType.STEP
+        )
         
         algorithms = {}
         
-        if self.problem_type == 'binary_classification':
+        # Common parameters
+        class_weight = 'balanced' if not self.dataset_info.get('is_balanced', True) else None
+        
+        if self.problem_type in ['binary_classification', 'multiclass_classification']:
+            # Enhanced classification algorithms
+            multi_class = 'ovr' if self.problem_type == 'binary_classification' else 'multinomial'
+            eval_metric = 'logloss' if self.problem_type == 'binary_classification' else 'mlogloss'
+            
             algorithms = {
+                # Linear models
                 'Logistic Regression': LogisticRegression(
-                    random_state=42, max_iter=1000,
-                    class_weight='balanced' if not self.dataset_info.get('is_balanced', True) else None
+                    random_state=42, max_iter=1000, multi_class=multi_class,
+                    class_weight=class_weight, solver='lbfgs'
                 ),
+                'Ridge Classifier': RidgeClassifier(
+                    random_state=42, class_weight=class_weight
+                ),
+                
+                # Tree-based models
                 'Random Forest': RandomForestClassifier(
-                    random_state=42, n_estimators=100,
-                    class_weight='balanced' if not self.dataset_info.get('is_balanced', True) else None
+                    random_state=42, n_estimators=100, class_weight=class_weight
                 ),
-                'SVM': SVC(random_state=42, probability=True),
-                'Decision Tree': DecisionTreeClassifier(
-                    random_state=42, max_depth=10,
-                    class_weight='balanced' if not self.dataset_info.get('is_balanced', True) else None
+                'Gradient Boosting': GradientBoostingClassifier(
+                    random_state=42, n_estimators=100, learning_rate=0.1
+                ),
+                'XGBoost': xgb.XGBClassifier(
+                    random_state=42, eval_metric=eval_metric, verbosity=0,
+                    use_label_encoder=False, scale_pos_weight=1 if class_weight is None else (sum(self.y == 0) / sum(self.y == 1) if class_weight == 'balanced' else 1)
+                ),
+                'LightGBM': LGBMClassifier(
+                    random_state=42, n_estimators=100, class_weight=class_weight
+                ),
+                
+                # Other models
+                'SVM': SVC(
+                    random_state=42, probability=True, class_weight=class_weight
                 ),
                 'K-Nearest Neighbors': KNeighborsClassifier(n_neighbors=5),
                 'Naive Bayes': GaussianNB(),
-                'XGBoost': xgb.XGBClassifier(random_state=42, eval_metric='logloss', verbosity=0)
+                'AdaBoost': AdaBoostClassifier(
+                    random_state=42, n_estimators=50
+                )
             }
             
-        elif self.problem_type == 'multiclass_classification':
+        else:  # Regression
             algorithms = {
-                'Logistic Regression': LogisticRegression(
-                    random_state=42, max_iter=1000, multi_class='ovr',
-                    class_weight='balanced' if not self.dataset_info.get('is_balanced', True) else None
-                ),
-                'Random Forest': RandomForestClassifier(
-                    random_state=42, n_estimators=100,
-                    class_weight='balanced' if not self.dataset_info.get('is_balanced', True) else None
-                ),
-                'SVM': SVC(random_state=42, probability=True),
-                'Decision Tree': DecisionTreeClassifier(
-                    random_state=42, max_depth=10,
-                    class_weight='balanced' if not self.dataset_info.get('is_balanced', True) else None
-                ),
-                'K-Nearest Neighbors': KNeighborsClassifier(n_neighbors=5),
-                'Naive Bayes': GaussianNB(),
-                'XGBoost': xgb.XGBClassifier(random_state=42, eval_metric='mlogloss', verbosity=0)
-            }
-            
-        elif self.problem_type == 'regression':
-            algorithms = {
+                # Linear models
                 'Linear Regression': LinearRegression(),
-                'Ridge Regression': Ridge(random_state=42),
+                'Ridge': Ridge(random_state=42),
+                'Lasso': Lasso(random_state=42, max_iter=5000),
+                'ElasticNet': ElasticNet(random_state=42, max_iter=5000),
+                
+                # Tree-based models
                 'Random Forest': RandomForestRegressor(random_state=42, n_estimators=100),
-                'Decision Tree': DecisionTreeRegressor(random_state=42, max_depth=10),
-                'K-Nearest Neighbors': KNeighborsRegressor(n_neighbors=5),
+                'Gradient Boosting': GradientBoostingRegressor(
+                    random_state=42, n_estimators=100, learning_rate=0.1
+                ),
                 'XGBoost': xgb.XGBRegressor(random_state=42, verbosity=0),
-                'SVR': SVR()
+                'LightGBM': LGBMRegressor(random_state=42, n_estimators=100),
+                
+                # Other models
+                'SVR': SVR(),
+                'K-Neighbors': KNeighborsRegressor(n_neighbors=5),
+                'AdaBoost': AdaBoostRegressor(random_state=42, n_estimators=50)
             }
         
         # Filter algorithms based on dataset size
-        if self.dataset_info['n_samples'] < 1000:
-            # Small dataset - prefer simpler algorithms
-            if 'XGBoost' in algorithms:
-                del algorithms['XGBoost']
-            print("   ⚠️ Small dataset detected - removed complex algorithms")
+        is_small_dataset = self.dataset_info['n_samples'] < 1000
         
-        print(f"   ✅ Selected {len(algorithms)} algorithms:")
+        if is_small_dataset:
+            ConsoleUI.print_message(
+                "Small dataset detected - using simplified models", 
+                MessageType.WARNING
+            )
+            # For small datasets, prefer simpler models
+            complex_models = ['XGBoost', 'LightGBM', 'Gradient Boosting']
+            for model in complex_models:
+                if model in algorithms:
+                    del algorithms[model]
+        
+        # Ensure we have exactly 7 algorithms
+        if len(algorithms) > 7:
+            # If we have too many, prioritize based on problem type
+            priority_order = {
+                'binary_classification': [
+                    'Logistic Regression', 'Random Forest', 'SVM',
+                    'Decision Tree', 'K-Nearest Neighbors', 'Naive Bayes', 'AdaBoost'
+                ],
+                'multiclass_classification': [
+                    'Logistic Regression', 'Random Forest', 'SVM',
+                    'Decision Tree', 'K-Nearest Neighbors', 'Naive Bayes', 'AdaBoost'
+                ],
+                'regression': [
+                    'Linear Regression', 'Random Forest', 'SVR',
+                    'Decision Tree', 'K-Neighbors', 'Ridge', 'Lasso'
+                ]
+            }
+            
+            # Get the top 7 algorithms for the current problem type
+            priority_list = priority_order.get(self.problem_type, list(algorithms.keys()))
+            selected_keys = [algo for algo in priority_list if algo in algorithms][:7]
+            algorithms = {k: algorithms[k] for k in selected_keys}
+        
+        # Log selected algorithms
+        ConsoleUI.print_message(f"Selected {len(algorithms)} algorithms:", MessageType.INFO)
         for i, name in enumerate(algorithms.keys(), 1):
-            print(f"      {i}. {name}")
+            ConsoleUI.print_message(f"{i}. {name}", MessageType.RESULT)
         
         return algorithms
     

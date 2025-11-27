@@ -12,6 +12,12 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
 import chardet
+import os
+import sys
+
+# Add the parent directory to path to allow importing ui_utils
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from ui_utils import ConsoleUI, MessageType
 
 # Core ML libraries
 from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold
@@ -46,8 +52,13 @@ class IntelligentMLRecommendationSystem:
         self.evaluation_results = None
         self.test_data = None
 
-    def log_message(self, message):
-        self.log.append(message)
+    def log_message(self, message, msg_type=MessageType.INFO):
+        """Log a message with a specific type"""
+        formatted_msg = ConsoleUI.format_message(message, msg_type)
+        self.log.append(formatted_msg)
+        
+        if msg_type in [MessageType.ERROR, MessageType.WARNING]:
+            print(formatted_msg)
         print(message)
 
     def run_complete_analysis(self, data_source, target_column=None):
@@ -60,7 +71,6 @@ class IntelligentMLRecommendationSystem:
             
             # Step 2: Create Preprocessing Pipeline
             self._create_preprocessing_pipeline()
-            
             # Step 3 & 4: Train and Evaluate Models
             self._train_and_evaluate_models()
             
@@ -113,7 +123,10 @@ class IntelligentMLRecommendationSystem:
             encoding = detected['encoding'] if detected['encoding'] else 'utf-8'
             confidence = detected['confidence'] if detected['confidence'] else 0.0
             
-            self.log_message(f"🔍 Detected encoding: {encoding} (confidence: {confidence:.2f})")
+            self.log_message(
+                f"Detected encoding: {encoding} (confidence: {confidence:.2f})",
+                MessageType.INFO
+            )
             
             # Fallback to common encodings if confidence is low
             if confidence < 0.7:
@@ -124,17 +137,19 @@ class IntelligentMLRecommendationSystem:
 
     def _super_robust_csv_reader(self, data_source):
         """Ultra-robust CSV reader with comprehensive error handling"""
-        
         # First, detect file type
         file_type = self._detect_file_type(data_source)
-        self.log_message(f"🔍 Detected file type: {file_type}")
+        self.log_message(f"Detected file type: {file_type}", MessageType.INFO)
         
         if file_type == 'binary':
-            raise ValueError(
-                "❌ This appears to be a binary file, not a CSV. \n"
-                "Please ensure you're uploading a text-based CSV file. \n"
+            error_msg = (
+                "This appears to be a binary file, not a CSV.\n"
+                "Please ensure you're uploading a text-based CSV file.\n"
                 "If this should be a CSV, the file may be corrupted."
             )
+            self.log_message(error_msg, MessageType.ERROR)
+            ErrorAlert(error_msg)
+            raise ValueError(error_msg)
         
         # Detect encoding
         encoding = self._detect_encoding(data_source)
@@ -180,7 +195,7 @@ class IntelligentMLRecommendationSystem:
                 
                 # Check if it's just a single column that needs to be split
                 if df.shape[1] == 1 and 'raw_data' in df.columns:
-                    self.log_message("🔧 Single column detected - attempting to split...")
+                    self.log_message("Single column detected - attempting to split...", MessageType.INFO)
                     df = self._split_single_column(df)
                 
                 # Final validation
@@ -190,29 +205,30 @@ class IntelligentMLRecommendationSystem:
                 if df.shape[1] < 2:  # Need at least 2 columns (feature + target)
                     raise ValueError("Need at least 2 columns for ML (features + target)")
                 
-                self.log_message(f"✅ Success with strategy #{i+1}: {df.shape[0]} rows, {df.shape[1]} columns")
+                self.log_message(f"Success with strategy #{i+1}: {df.shape[0]} rows, {df.shape[1]} columns", MessageType.SUCCESS)
                 return df
                 
             except Exception as e:
                 last_error = e
-                self.log_message(f"⚠️ Strategy #{i+1} failed: {str(e)}")
+                self.log_message(f"Strategy #{i+1} failed: {str(e)}", MessageType.WARNING)
                 continue
         
         # If all strategies failed, provide helpful error message
-        raise ValueError(
-            f"❌ Could not parse the file successfully.\n\n"
-            f"**Issues detected:**\n"
-            f"• File might be corrupted or not a proper CSV\n"
-            f"• Might have only 1 column (need at least 2 for ML)\n"
-            f"• Insufficient data for machine learning\n\n"
-            f"**Solutions:**\n"
-            f"1. **Check your file**: Open in notepad to verify it's readable text\n"
-            f"2. **Ensure multiple columns**: ML needs features + target column\n"
-            f"3. **Add more data**: Need at least 10+ rows for analysis\n"
-            f"4. **Try Excel format**: Save as .xlsx instead of .csv\n"
-            f"5. **Check delimiters**: Ensure data is properly separated\n\n"
+        error_msg = (
+            "All parsing strategies failed. Please check your file format.\n\n"
+            "**Issues detected:**\n"
+            "• File might be corrupted or not a proper CSV\n"
+            "• Might have only 1 column (need at least 2 for ML)\n"
+            "• Insufficient data for machine learning\n\n"
+            "**Solutions:**\n"
+            "1. Check your file: Open in notepad to verify it's readable text\n"
+            "2. Ensure multiple columns: ML needs features + target column\n"
+            "3. Add more data: Need at least 10+ rows for analysis\n"
+            "4. Try Excel format: Save as .xlsx instead of .csv\n"
+            "5. Check delimiters: Ensure data is properly separated\n\n"
             f"Last error: {str(last_error)}"
         )
+        raise ValueError(error_msg)
 
     def _split_single_column(self, df):
         """Attempt to split a single column into multiple columns"""
@@ -636,49 +652,133 @@ class IntelligentMLRecommendationSystem:
         return fig
 
 
+def display_error(message):
+    """Display an error message in a styled container"""
+    st.markdown(f"""
+    <div style='
+        background-color: #ffebee;
+        border-left: 5px solid #f44336;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 4px;
+    '>
+        <div style='display: flex; align-items: center;'>
+            <span style='color: #f44336; margin-right: 10px; font-weight: bold;'>ERROR</span>
+            <span>{message}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+def display_success(message):
+    """Display a success message in a styled container"""
+    st.markdown(f"""
+    <div style='
+        background-color: #e8f5e9;
+        border-left: 5px solid #4caf50;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 4px;
+    '>
+        <div style='display: flex; align-items: center;'>
+            <span style='color: #4caf50; margin-right: 10px; font-weight: bold;'>SUCCESS</span>
+            <span>{message}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+def display_warning(message):
+    """Display a warning message in a styled container"""
+    st.markdown(f"""
+    <div style='
+        background-color: #fff8e1;
+        border-left: 5px solid #ffc107;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 4px;
+    '>
+        <div style='display: flex; align-items: center;'>
+            <span style='color: #ff9800; margin-right: 10px; font-weight: bold;'>WARNING</span>
+            <span>{message}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 def main():
     st.set_page_config(
         page_title="ML Algorithm Recommender",
-        page_icon="🚀",
+        page_icon="🤖",  # Using robot emoji instead of rocket
         layout="wide"
     )
     
+    # Custom CSS for the application
     st.markdown("""
     <style>
         .main-title {
-            font-size: 3rem;
-            color: #1f77b4;
+            font-size: 2.5rem;
+            color: #1a237e;
             text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #455a64;
             margin-bottom: 2rem;
-            font-weight: bold;
+            font-size: 1.1rem;
         }
-        .error-box {
-            background-color: #ffe6e6;
-            border: 2px solid #ff4444;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
+        .metric-card {
+            background: #f5f7fa;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
         }
-        .success-box {
-            background: linear-gradient(90deg, #4CAF50, #45a049);
+        .metric-title {
+            font-size: 0.9rem;
+            color: #546e7a;
+            margin-bottom: 0.5rem;
+        }
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #263238;
+        }
+        .stButton>button {
+            width: 100%;
+            background: linear-gradient(45deg, #2196F3, #1976D2);
             color: white;
-            padding: 20px;
+            font-weight: 500;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        .stButton>button:hover {
+            background: linear-gradient(45deg, #1976D2, #0D47A1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .sidebar .sidebar-content {
+            background: #f8f9fa;
+            padding: 1.5rem;
             border-radius: 10px;
-            margin: 20px 0;
         }
     </style>
     """, unsafe_allow_html=True)
     
-    st.markdown('<h1 class="main-title">🚀 ML Algorithm Recommender</h1>', unsafe_allow_html=True)
+    # Main title and subtitle
+    st.markdown('<h1 class="main-title">ML Algorithm Recommender</h1>', unsafe_allow_html=True)
     st.markdown("""
-    <div style='text-align: center; margin-bottom: 2rem;'>
-        <strong>Ultra-Robust File Parser</strong> - Handles single columns, missing features, and corrupted files!
+    <div class="subtitle">
+        Advanced machine learning pipeline with intelligent algorithm selection and automated preprocessing
     </div>
     """, unsafe_allow_html=True)
     
     # Sidebar
     with st.sidebar:
-        st.markdown("### 📁 Upload Dataset")
+        st.markdown("### Upload Dataset")
         uploaded_file = st.file_uploader(
             "Choose CSV or Excel file", 
             type=['csv', 'xlsx', 'xls'],
@@ -686,48 +786,76 @@ def main():
         )
         
         if uploaded_file:
-            st.success(f"✅ File loaded: {uploaded_file.name}")
+            display_success(f"File loaded: {uploaded_file.name}")
             
             target_column = st.text_input(
                 "Target column (optional)", 
                 help="Leave blank to auto-detect (uses last column)"
             )
             
-            run_analysis = st.button("🚀 Run Analysis", type="primary")
+            run_analysis = st.button("Run Analysis", type="primary", key="run_analysis")
         
         st.markdown("---")
-        st.markdown("### 📋 Requirements")
-        st.info("""
-        **Your dataset needs:**
-        - At least 2 columns (features + target)
-        - At least 10+ rows
-        - Readable text format
-        - Consistent structure
-        """)
+        st.markdown("### Dataset Requirements")
+        with st.expander("View requirements"):
+            st.markdown("""
+            - **Minimum Requirements:**
+                - 2+ columns (features + target)
+                - 10+ rows of data
+                - Text or numeric data format
+                - Consistent data structure
+            - **Recommended:**
+                - 100+ rows for better model performance
+                - Clean, labeled data
+                - Balanced classes (for classification)
+            """)
         
-        st.markdown("### 🛠️ Auto-Fixes")
-        st.markdown("""
-        - Single column splitting
-        - Feature generation
-        - Encoding detection
-        - Delimiter auto-detection
-        - Error recovery
-        """)
+        st.markdown("### Supported Features")
+        with st.expander("View features"):
+            st.markdown("""
+            - **Data Handling:**
+                - Automatic type detection
+                - Missing value imputation
+                - Outlier handling
+                - Categorical encoding
+            - **Advanced Features:**
+                - Smart feature selection
+                - Cross-validation
+                - Hyperparameter tuning
+                - Performance metrics
+            """)
     
     # Main content
     if uploaded_file:
         # Show file analysis
-        with st.expander("🔍 File Analysis", expanded=True):
+        with st.expander("File Analysis", expanded=True):
+            st.markdown("### Dataset Information")
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("📄 Name", uploaded_file.name)
+                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+                st.markdown('<div class="metric-title">File Name</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="metric-value">{uploaded_file.name}</div>', unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+            
             with col2:
-                st.metric("📊 Size", f"{uploaded_file.size / 1024:.1f} KB")
+                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+                st.markdown('<div class="metric-title">File Size</div>', unsafe_allow_html=True)
+                size_mb = uploaded_file.size / (1024 * 1024)
+                if size_mb < 1:
+                    size_str = f"{uploaded_file.size / 1024:.1f} KB"
+                else:
+                    size_str = f"{size_mb:.2f} MB"
+                st.markdown(f'<div class="metric-value">{size_str}</div>', unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+            
             with col3:
-                st.metric("🔧 Type", uploaded_file.type.split('/')[-1].upper())
+                st.markdown('<div class="metric-card">', unsafe_allow_html=True)
+                st.markdown('<div class="metric-title">File Type</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="metric-value">{uploaded_file.type.split("/")[-1].upper()}</div>', unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
         
         if run_analysis:
-            with st.spinner("🔄 Processing with ultra-robust parser..."):
+            with st.spinner("Analyzing dataset and selecting best algorithms..."):
                 try:
                     uploaded_file.seek(0)
                     
