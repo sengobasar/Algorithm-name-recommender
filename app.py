@@ -18,6 +18,7 @@ import sys
 # Add the parent directory to path to allow importing ui_utils
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from ui_utils import ConsoleUI, MessageType
+from llm_explainer import render_ai_explanation_panel
 
 # Core ML libraries
 from sklearn.model_selection import train_test_split, cross_val_score, StratifiedKFold
@@ -710,6 +711,13 @@ def main():
         layout="wide"
     )
     
+    # Initialize session state
+    if "analysis_done" not in st.session_state:
+        st.session_state.analysis_done = False
+        st.session_state.ai_active = False
+        st.session_state.analysis_results = None
+        st.session_state.structured_results = None
+    
     # Custom CSS for the application
     st.markdown("""
     <style>
@@ -827,6 +835,40 @@ def main():
     
     # Main content
     if uploaded_file:
+        # Show analysis results if available
+        if st.session_state.get("analysis_done") and st.session_state.analysis_results:
+            # Display results
+            display_results(st.session_state.analysis_results)
+            
+            # Add AI explanation button if not already active
+            if not st.session_state.get("ai_active", False):
+                if st.sidebar.button("🤖 Explain with AI", key="activate_ai_sidebar"):
+                    st.session_state.ai_active = True
+                    st.rerun()
+            
+            # Download results
+            st.markdown("---")
+            st.subheader("📁 Export Results")
+            csv_data = st.session_state.analysis_results['comparison_df'].to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="📥 Download Results as CSV",
+                data=csv_data,
+                file_name=f"ml_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                mime='text/csv',
+                help="Download the model comparison results as a CSV file"
+            )
+            
+            # Processing log
+            with st.expander("🔍 View Processing Log"):
+                for log_entry in st.session_state.analysis_results['log']:
+                    if '\u274c' in log_entry:
+                        st.error(log_entry)
+                    elif '\u26a0\ufe0f' in log_entry:
+                        st.warning(log_entry)
+                    elif '\u2705' in log_entry:
+                        st.success(log_entry)
+                    else:
+                        st.info(log_entry)
         # Show file analysis
         with st.expander("File Analysis", expanded=True):
             st.markdown("### Dataset Information")
@@ -865,58 +907,18 @@ def main():
                         target_column=target_column if target_column else None
                     )
                     
-                    # Success message
-                    st.markdown("""
-                    <div class='success-box'>
-                        <h2>🎉 Analysis Complete!</h2>
-                        <p>Successfully processed and analyzed your dataset!</p>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    # Store results in session state
+                    st.session_state.analysis_results = results
+                    st.session_state.analysis_done = True
+                    st.session_state.structured_results = {
+                        'best_algorithm': results['best_algorithm'],
+                        'metrics': results['best_score'],
+                        'model_comparison': results['comparison_df'].to_dict(),
+                        'problem_type': results.get('problem_type', 'unknown')
+                    }
                     
                     st.balloons()
-                    
-                    # Results
-                    st.markdown("## 🏆 Results")
-                    
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("🥇 Best Algorithm", results['best_algorithm'])
-                    with col2:
-                        metric_name = list(results['best_score'].keys())[0]
-                        metric_value = list(results['best_score'].values())[0]
-                        st.metric(f"📊 {metric_name.title()}", f"{metric_value:.4f}")
-                    with col3:
-                        st.metric("🎯 Problem", results['problem_type'].replace('_', ' ').title())
-                    
-                    # Comparison table
-                    st.markdown("## 📊 Algorithm Comparison")
-                    st.dataframe(results['comparison_df'], use_container_width=True)
-                    
-                    # Visualizations
-                    if results['visualization_figure']:
-                        st.markdown("## 📈 Visualizations")
-                        st.plotly_chart(results['visualization_figure'], use_container_width=True)
-                    
-                    # Download results
-                    csv_data = results['comparison_df'].to_csv(index=False).encode('utf-8')
-                    st.download_button(
-                        label="📥 Download Results",
-                        data=csv_data,
-                        file_name=f"ml_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-                        mime='text/csv'
-                    )
-                    
-                    # Processing log
-                    with st.expander("🔍 Processing Log"):
-                        for log_entry in results['log']:
-                            if '❌' in log_entry:
-                                st.error(log_entry)
-                            elif '⚠️' in log_entry:
-                                st.warning(log_entry)
-                            elif '✅' in log_entry:
-                                st.success(log_entry)
-                            else:
-                                st.info(log_entry)
+                    st.rerun()  # Rerun to update the UI with the new state
                     
                 except Exception as e:
                     st.markdown(f"""
@@ -954,6 +956,41 @@ def main():
         - Try saving as Excel (.xlsx)
         - Open file in notepad to check if readable
         """)
+
+def display_results(analysis_results):
+    """Display the analysis results in a user-friendly format"""
+    # Create two columns: main content (2/3) and right column (1/3)
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown("""
+        <div class='success-box'>
+            <h2>🎉 Analysis Complete!</h2>
+            <p>Successfully processed and analyzed your dataset!</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.subheader("🎯 Best Algorithm: " + analysis_results['best_algorithm'])
+        
+        # Display metrics
+        st.subheader("📊 Performance Metrics")
+        metric_name, metric_value = list(analysis_results['best_score'].items())[0]
+        st.metric(f"Best {metric_name}", f"{metric_value:.4f}")
+        
+        # Display comparison table
+        st.subheader("📈 Model Comparison")
+        st.dataframe(analysis_results['comparison_df'].style.highlight_max(axis=0))
+        
+        # Display visualization if available
+        if 'visualization_figure' in analysis_results and analysis_results['visualization_figure'] is not None:
+            st.subheader("📊 Performance Visualization")
+            st.plotly_chart(analysis_results['visualization_figure'], use_container_width=True)
+    
+    # Add AI explanation panel to the right column if active
+    # This is the ONLY place where the AI panel is rendered
+    if st.session_state.get("ai_active", False):
+        with col2:
+            render_ai_explanation_panel(st.session_state.structured_results)
 
 if __name__ == "__main__":
     main()
