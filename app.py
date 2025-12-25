@@ -14,6 +14,222 @@ import plotly.express as px
 import chardet
 import os
 import sys
+import streamlit.components.v1 as components
+import base64
+
+def custom_file_uploader(label, types, help_text):
+    """Custom file uploader with animated folder design"""
+    component = _custom_file_uploader_component(label, types, help_text)
+
+    if component and component.value:
+        component_value = component.value
+        # Parse the returned data - try different approaches
+        try:
+            if isinstance(component_value, dict):
+                file_data = component_value['file_data']
+                file_name = component_value['file_name']
+                file_type = component_value['file_type']
+            else:
+                # If it's not a dict, try to access as attributes
+                file_data = getattr(component_value, 'file_data', None)
+                file_name = getattr(component_value, 'file_name', None)
+                file_type = getattr(component_value, 'file_type', None)
+
+            if file_data and file_name:
+                # Decode base64 data
+                file_bytes = base64.b64decode(file_data)
+
+                # Create a file-like object
+                file_obj = io.BytesIO(file_bytes)
+                file_obj.name = file_name
+                file_obj.type = file_type
+
+                return file_obj
+            else:
+                st.error("Missing file data or filename from upload")
+                return None
+        except Exception as e:
+            st.error(f"Error processing uploaded file: {str(e)}")
+            return None
+
+    return None
+
+def _custom_file_uploader_component(label, types, help_text):
+    """Streamlit component for custom file uploader"""
+    # HTML and CSS for the custom uploader
+    html_code = f"""
+    <div class="container">
+      <div class="folder">
+        <div class="front-side">
+          <div class="tip"></div>
+          <div class="cover"></div>
+        </div>
+        <div class="back-side cover"></div>
+      </div>
+      <label class="custom-file-upload">
+        <input class="title" type="file" id="file-input" accept="{','.join('.' + t for t in types)}" />
+        {label}
+      </label>
+    </div>
+
+    <style>
+    .container {{
+      --transition: 350ms;
+      --folder-W: 120px;
+      --folder-H: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 10px;
+      background: linear-gradient(135deg, #6dd5ed, #2193b0);
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      height: calc(var(--folder-H) * 1.7);
+      position: relative;
+    }}
+
+    .folder {{
+      position: absolute;
+      top: -20px;
+      left: calc(50% - 60px);
+      animation: float 2.5s infinite ease-in-out;
+      transition: transform var(--transition) ease;
+    }}
+
+    .folder:hover {{
+      transform: scale(1.05);
+    }}
+
+    .folder .front-side,
+    .folder .back-side {{
+      position: absolute;
+      transition: transform var(--transition);
+      transform-origin: bottom center;
+    }}
+
+    .folder .back-side::before,
+    .folder .back-side::after {{
+      content: "";
+      display: block;
+      background-color: white;
+      opacity: 0.5;
+      z-index: 0;
+      width: var(--folder-W);
+      height: var(--folder-H);
+      position: absolute;
+      transform-origin: bottom center;
+      border-radius: 15px;
+      transition: transform 350ms;
+      z-index: 0;
+    }}
+
+    .container:hover .back-side::before {{
+      transform: rotateX(-5deg) skewX(5deg);
+    }}
+    .container:hover .back-side::after {{
+      transform: rotateX(-15deg) skewX(12deg);
+    }}
+
+    .folder .front-side {{
+      z-index: 1;
+    }}
+
+    .container:hover .front-side {{
+      transform: rotateX(-40deg) skewX(15deg);
+    }}
+
+    .folder .tip {{
+      background: linear-gradient(135deg, #ff9a56, #ff6f56);
+      width: 80px;
+      height: 20px;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      position: absolute;
+      top: -10px;
+      z-index: 2;
+    }}
+
+    .folder .cover {{
+      background: linear-gradient(135deg, #ffe563, #ffc663);
+      width: var(--folder-W);
+      height: var(--folder-H);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+    }}
+
+    .custom-file-upload {{
+      font-size: 1.1em;
+      color: #ffffff;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: background var(--transition) ease;
+      display: inline-block;
+      width: 100%;
+      padding: 10px 35px;
+      position: relative;
+    }}
+
+    .custom-file-upload:hover {{
+      background: rgba(255, 255, 255, 0.4);
+    }}
+
+    .custom-file-upload input[type="file"] {{
+      display: none;
+    }}
+
+    @keyframes float {{
+      0% {{
+        transform: translateY(0px);
+      }}
+
+      50% {{
+        transform: translateY(-20px);
+      }}
+
+      100% {{
+        transform: translateY(0px);
+      }}
+    }}
+    </style>
+
+    <script>
+    const fileInput = document.getElementById('file-input');
+    const label = document.querySelector('.custom-file-upload');
+
+    label.addEventListener('click', () => {{
+      fileInput.click();
+    }});
+
+    fileInput.addEventListener('change', (event) => {{
+      const file = event.target.files[0];
+      if (file) {{
+        const reader = new FileReader();
+        reader.onload = function(e) {{
+          const fileData = e.target.result.split(',')[1]; // Remove data: prefix
+          const fileInfo = {{
+            file_data: fileData,
+            file_name: file.name,
+            file_type: file.type
+          }};
+          // Send data back to Streamlit
+          window.parent.postMessage({{
+            type: 'streamlit:setComponentValue',
+            value: fileInfo
+          }}, '*');
+        }};
+        reader.readAsDataURL(file);
+      }}
+    }});
+    </script>
+    """
+
+    return components.html(html_code, height=200)
+
 
 # Add the parent directory to path to allow importing ui_utils
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -656,13 +872,7 @@ class IntelligentMLRecommendationSystem:
 def display_error(message):
     """Display an error message in a styled container"""
     st.markdown(f"""
-    <div style='
-        background-color: #ffebee;
-        border-left: 5px solid #f44336;
-        padding: 1rem;
-        margin: 1rem 0;
-        border-radius: 4px;
-    '>
+    <div style='background-color: #ffebee; border-left: 5px solid #f44336; padding: 1rem; margin: 1rem 0; border-radius: 4px;'>
         <div style='display: flex; align-items: center;'>
             <span style='color: #f44336; margin-right: 10px; font-weight: bold;'>ERROR</span>
             <span>{message}</span>
@@ -673,13 +883,7 @@ def display_error(message):
 def display_success(message):
     """Display a success message in a styled container"""
     st.markdown(f"""
-    <div style='
-        background-color: #e8f5e9;
-        border-left: 5px solid #4caf50;
-        padding: 1rem;
-        margin: 1rem 0;
-        border-radius: 4px;
-    '>
+    <div style='background-color: #e8f5e9; border-left: 5px solid #4caf50; padding: 1rem; margin: 1rem 0; border-radius: 4px;'>
         <div style='display: flex; align-items: center;'>
             <span style='color: #4caf50; margin-right: 10px; font-weight: bold;'>SUCCESS</span>
             <span>{message}</span>
@@ -786,9 +990,125 @@ def main():
     
     # Sidebar
     with st.sidebar:
-        st.markdown("### Upload Dataset")
+        # Add animated folder decoration
+        st.markdown("""
+        <div class="container">
+          <div class="folder">
+            <div class="front-side">
+              <div class="tip"></div>
+              <div class="cover"></div>
+            </div>
+            <div class="back-side cover"></div>
+          </div>
+        </div>
+
+        <style>
+        .container {
+          --transition: 350ms;
+          --folder-W: 120px;
+          --folder-H: 80px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-end;
+          padding: 10px;
+          background: linear-gradient(135deg, #6dd5ed, #2193b0);
+          border-radius: 15px;
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+          height: calc(var(--folder-H) * 1.7);
+          position: relative;
+          margin-bottom: 20px;
+        }
+
+        .folder {
+          position: absolute;
+          top: -20px;
+          left: calc(50% - 60px);
+          animation: float 2.5s infinite ease-in-out;
+          transition: transform var(--transition) ease;
+        }
+
+        .folder:hover {
+          transform: scale(1.05);
+        }
+
+        .folder .front-side,
+        .folder .back-side {
+          position: absolute;
+          transition: transform var(--transition);
+          transform-origin: bottom center;
+        }
+
+        .folder .back-side::before,
+        .folder .back-side::after {
+          content: "";
+          display: block;
+          background-color: white;
+          opacity: 0.5;
+          z-index: 0;
+          width: var(--folder-W);
+          height: var(--folder-H);
+          position: absolute;
+          transform-origin: bottom center;
+          border-radius: 15px;
+          transition: transform 350ms;
+          z-index: 0;
+        }
+
+        .container:hover .back-side::before {
+          transform: rotateX(-5deg) skewX(5deg);
+        }
+        .container:hover .back-side::after {
+          transform: rotateX(-15deg) skewX(12deg);
+        }
+
+        .folder .front-side {
+          z-index: 1;
+        }
+
+        .container:hover .front-side {
+          transform: rotateX(-40deg) skewX(15deg);
+        }
+
+        .folder .tip {
+          background: linear-gradient(135deg, #ff9a56, #ff6f56);
+          width: 80px;
+          height: 20px;
+          border-radius: 12px 12px 0 0;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          position: absolute;
+          top: -10px;
+          z-index: 2;
+        }
+
+        .folder .cover {
+          background: linear-gradient(135deg, #ffe563, #ffc663);
+          width: var(--folder-W);
+          height: var(--folder-H);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+          border-radius: 10px;
+        }
+
+        @keyframes float {
+          0% {
+            transform: translateY(0px);
+          }
+
+          50% {
+            transform: translateY(-20px);
+          }
+
+          100% {
+            transform: translateY(0px);
+          }
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<div style="margin-top: -130px;"></div>', unsafe_allow_html=True)
+
         uploaded_file = st.file_uploader(
-            "Choose CSV or Excel file", 
+            "Choose a file",
             type=['csv', 'xlsx', 'xls'],
             help="Need at least 2 columns and 10+ rows for ML"
         )
