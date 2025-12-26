@@ -922,69 +922,225 @@ def main():
         st.session_state.analysis_results = None
         st.session_state.structured_results = None
     
-    # Custom CSS for the application
+    # Custom CSS for the application - Professional ML Research Theme
     st.markdown("""
     <style>
-        .main-title {
-            font-size: 2.5rem;
-            color: #1a237e;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+        html, body, [class*="css"] {
+            font-family: 'Ubuntu', sans-serif;
         }
+
+        .main-title {
+            font-size: 4rem;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            font-family: 'Ubuntu', sans-serif;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
         .subtitle {
             text-align: center;
-            color: #455a64;
+            color: #b1b1b1;
+            margin-bottom: 3rem;
+            font-size: 1.3rem;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: 300;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .section-header {
+            font-size: 2.5rem;
+            color: #ffffff;
             margin-bottom: 2rem;
-            font-size: 1.1rem;
+            font-weight: 500;
+            font-family: 'Ubuntu', sans-serif;
+            text-align: center;
+            border-bottom: 2px solid #333333;
+            padding-bottom: 1rem;
         }
+
+        .subsection-header {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            font-family: 'Ubuntu', sans-serif;
+        }
+
         .metric-card {
-            background: #f5f7fa;
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 1rem;
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+            border: 1px solid #333333;
         }
+
         .metric-title {
             font-size: 0.9rem;
-            color: #546e7a;
+            color: #888888;
             margin-bottom: 0.5rem;
-        }
-        .metric-value {
-            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             font-weight: 600;
-            color: #263238;
         }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+        }
+
         .stButton>button {
             width: 100%;
-            background: linear-gradient(45deg, #2196F3, #1976D2);
+            background: linear-gradient(135deg, #7e22ce, #3b82f6);
             color: white;
             font-weight: 500;
             border: none;
-            padding: 0.75rem;
-            border-radius: 6px;
+            padding: 1rem;
+            border-radius: 8px;
             transition: all 0.3s ease;
+            font-family: 'Ubuntu', sans-serif;
+            font-size: 1.1rem;
         }
+
         .stButton>button:hover {
-            background: linear-gradient(45deg, #1976D2, #0D47A1);
+            background: linear-gradient(135deg, #6b21a8, #2563eb);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(126, 34, 206, 0.4);
         }
+
         .sidebar .sidebar-content {
-            background: #f8f9fa;
-            padding: 1.5rem;
+            background: #000000;
+            padding: 2rem;
+            border-radius: 12px;
+            font-family: 'Ubuntu', sans-serif;
+            color: #ffffff;
+        }
+
+        .welcome-text {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+
+        .feature-list {
+            background: #1a1a1a;
+            padding: 2rem;
             border-radius: 10px;
+            margin-bottom: 2rem;
+            border: 1px solid #333333;
+        }
+
+        .feature-list ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .feature-list li {
+            margin-bottom: 0.8rem;
+            color: #cccccc;
+            font-size: 1.1rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            padding: 4rem 2rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .content-section {
+            background: #0a0a0a;
+            padding: 3rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid #222222;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #ffffff 0%, #cccccc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stTextInput>div>div>input {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            padding: 0.5rem;
+        }
+
+        .stTextInput>div>div>input:focus {
+            border-color: #7e22ce;
+            box-shadow: 0 0 0 2px rgba(126, 34, 206, 0.2);
+        }
+
+        .stFileUploader>div {
+            background-color: #1a1a1a;
+            border: 2px dashed #333333;
+            border-radius: 10px;
+        }
+
+        .stFileUploader>div:hover {
+            border-color: #7e22ce;
+        }
+
+        .stExpander {
+            background-color: #1a1a1a;
+            border: 1px solid #333333;
+            border-radius: 8px;
+        }
+
+        .stExpander summary {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .stDataFrame {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+        }
+
+        .stDataFrame table {
+            color: #ffffff;
+        }
+
+        .stDataFrame thead th {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        .stDataFrame tbody tr:nth-child(even) {
+            background-color: #0a0a0a;
+        }
+
+        .stDataFrame tbody tr:nth-child(odd) {
+            background-color: #1a1a1a;
         }
     </style>
     """, unsafe_allow_html=True)
-    
-    # Main title and subtitle
-    st.markdown('<h1 class="main-title">ML Algorithm Recommender</h1>', unsafe_allow_html=True)
+
+    # Hero Section
     st.markdown("""
-    <div class="subtitle">
-        Advanced machine learning pipeline with intelligent algorithm selection and automated preprocessing
+    <div class="hero-section">
+        <h1 class="main-title">ML Algorithm Recommender</h1>
+        <div class="subtitle">
+            Intelligent machine learning pipeline for automated algorithm selection and preprocessing under imperfect data conditions
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1256,26 +1412,66 @@ def main():
     else:
         # Welcome message
         st.info("👈 Upload a dataset to get started!")
-        
-        # Help section
+
+        # System overview
         st.markdown("""
-        ## 🆘 Common Issues & Solutions
-        
-        **❌ "No models were successfully trained"**
-        - Your dataset likely has only 1 column
-        - ML needs multiple columns (features + target)
-        - Try adding more columns or use Excel format
-        
-        **❌ "at least one array or dtype is required"**
-        - Usually means no valid features found
-        - Check if your data has proper columns
-        - Ensure data is not corrupted
-        
-        **❌ "binary file" error**
-        - File is corrupted or not CSV format
-        - Try saving as Excel (.xlsx)
-        - Open file in notepad to check if readable
+        ## Algorithm Selection Under Imperfect Data
+
+        This system addresses the challenge of selecting appropriate machine learning algorithms when working with real-world datasets that may contain missing values, mixed data types, or inconsistent formatting. Traditional approaches often fail under these conditions, requiring extensive manual preprocessing.
+
+        ## Adaptive Preprocessing Pipeline
+
+        The system employs an intelligent preprocessing strategy that adapts to dataset characteristics:
+
+        - **Type-aware feature processing**: Auc:\awesome-landing-pagestomatically detects numerical and categorical features
+        - **Robust imputation**: Handles missing values using appropriate strategies for each data type
+        - **Flexible encoding**: Transforms categorical variables while preserving information
+        - **Standardization**: Normalizes numerical features for algorithm compatibility
+
+        ## What Happens After Upload
+
+        Once a dataset is provided, the system follows a systematic evaluation process:
+
+        ### 1. Dataset Inspection
+        - Analyzes data structure and identifies feature types
+        - Detects problem type (classification vs regression)
+        - Validates data quality and completeness
+
+        ### 2. Type-Aware Preprocessing
+        - Applies appropriate transformations based on feature characteristics
+        - Handles missing values and categorical encoding
+        - Prepares data for multiple algorithm families
+
+        ### 3. Multi-Algorithm Evaluation
+        - Trains multiple algorithms suitable for the detected problem type
+        - Uses consistent preprocessing across all models
+        - Evaluates performance on held-out test data
+
+        ### 4. Transparent Comparison and Recommendation
+        - Ranks algorithms by primary performance metric
+        - Provides detailed comparison table with multiple evaluation criteria
+        - Recommends the best-performing algorithm for the specific dataset
+
+        ## Help & Troubleshooting
         """)
+
+        with st.expander("Common Issues & Solutions"):
+            st.markdown("""
+            **❌ "No models were successfully trained"**
+            - Dataset may have insufficient columns or rows
+            - Ensure at least 2 columns (features + target) and 10+ rows
+            - Check for corrupted or non-standard data formats
+
+            **❌ "at least one array or dtype is required"**
+            - Usually indicates no valid features were found
+            - Verify data contains multiple columns with meaningful content
+            - Ensure target column is properly identified
+
+            **❌ "binary file" error**
+            - File may be corrupted or not in expected format
+            - Try saving as Excel (.xlsx) or ensure CSV is properly formatted
+            - Open file in a text editor to verify readable content
+            """)
 
 def display_results(analysis_results):
     """Display the analysis results in a user-friendly format"""
