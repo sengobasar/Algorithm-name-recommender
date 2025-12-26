@@ -5,3 +5,5 @@ iris_demo.csv
 *.html
 *.pkl
 logs/ 
+# UI reference only (not part of project)
+awesome-landing-pages/
