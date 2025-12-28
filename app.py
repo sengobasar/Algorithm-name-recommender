@@ -1277,6 +1277,71 @@ def main():
                 help="Leave blank to auto-detect (uses last column)"
             )
             
+            css = """
+<style>
+@keyframes button-shimmer-rotate {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Target the specific Streamlit button element */
+div.stButton > button {
+    /* SaaS Black Pill Button Style */
+    background-color: #000000;
+    color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    border-radius: 9999px; /* Pill shape */
+    
+    /* Positioning for pseudo-elements and layout */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: box-shadow 0.3s ease;
+
+    /* Override any conflicting styles from the app's main CSS */
+    background-image: none;
+    transform: none;
+}
+
+/* Rotating shimmer pseudo-element */
+div.stButton > button::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        transparent 0deg,
+        transparent 270deg,
+        rgba(255, 255, 255, 0.5) 295deg,
+        rgba(255, 255, 255, 0) 320deg,
+        transparent 360deg
+    );
+    animation: button-shimmer-rotate 4s linear infinite;
+}
+
+/* Hover glow effect */
+div.stButton > button:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    /* Reset other hover effects */
+    transform: none; 
+    background-color: #111111;
+}
+
+/* Ensure button text is above the shimmer */
+div.stButton > button span {
+    position: relative;
+    z-index: 2;
+}
+</style>
+"""
+            st.markdown(css, unsafe_allow_html=True)
             run_analysis = st.button("Run Analysis", type="primary", key="run_analysis")
         
         st.markdown("---")
