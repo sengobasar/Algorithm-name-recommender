@@ -1131,6 +1131,27 @@ def main():
         .stDataFrame tbody tr:nth-child(odd) {
             background-color: #1a1a1a;
         }
+        
+        /* Custom Expander Cards */
+        div[data-testid="stExpander"] {
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(145deg, #212121, #000);
+            margin-bottom: 10px; /* Add space between cards */
+        }
+        div[data-testid="stExpander"] summary:hover {
+            background: linear-gradient(145deg, #444, #111);
+        }
+        div[data-testid="stExpander"] summary {
+            background: linear-gradient(145deg, #333, #000);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: #00ffeb;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 1.1em;
+        }
     </style>
     """, unsafe_allow_html=True)
 
@@ -1478,49 +1499,29 @@ div.stButton > button span {
         # Welcome message
         st.info("👈 Upload a dataset to get started!")
 
-        # System overview
-        st.markdown("""
-        ## Algorithm Selection Under Imperfect Data
+        with st.expander("👋 Welcome & Overview", expanded=True):
+            st.markdown("""
+            This system addresses the challenge of selecting appropriate machine learning algorithms when working with real-world datasets that may contain missing values, mixed data types, or inconsistent formatting. Traditional approaches often fail under these conditions, requiring extensive manual preprocessing.
+            """)
 
-        This system addresses the challenge of selecting appropriate machine learning algorithms when working with real-world datasets that may contain missing values, mixed data types, or inconsistent formatting. Traditional approaches often fail under these conditions, requiring extensive manual preprocessing.
+        with st.expander("⚙️ How It Works", expanded=True):
+            st.markdown("""
+            The system employs an intelligent preprocessing strategy that adapts to dataset characteristics:
 
-        ## Adaptive Preprocessing Pipeline
+            - **Type-aware feature processing**: Automatically detects numerical and categorical features
+            - **Robust imputation**: Handles missing values using appropriate strategies for each data type
+            - **Flexible encoding**: Transforms categorical variables while preserving information
+            - **Standardization**: Normalizes numerical features for algorithm compatibility
 
-        The system employs an intelligent preprocessing strategy that adapts to dataset characteristics:
+            Once a dataset is provided, the system follows a systematic evaluation process:
 
-        - **Type-aware feature processing**: Auc:\awesome-landing-pagestomatically detects numerical and categorical features
-        - **Robust imputation**: Handles missing values using appropriate strategies for each data type
-        - **Flexible encoding**: Transforms categorical variables while preserving information
-        - **Standardization**: Normalizes numerical features for algorithm compatibility
-
-        ## What Happens After Upload
-
-        Once a dataset is provided, the system follows a systematic evaluation process:
-
-        ### 1. Dataset Inspection
-        - Analyzes data structure and identifies feature types
-        - Detects problem type (classification vs regression)
-        - Validates data quality and completeness
-
-        ### 2. Type-Aware Preprocessing
-        - Applies appropriate transformations based on feature characteristics
-        - Handles missing values and categorical encoding
-        - Prepares data for multiple algorithm families
-
-        ### 3. Multi-Algorithm Evaluation
-        - Trains multiple algorithms suitable for the detected problem type
-        - Uses consistent preprocessing across all models
-        - Evaluates performance on held-out test data
-
-        ### 4. Transparent Comparison and Recommendation
-        - Ranks algorithms by primary performance metric
-        - Provides detailed comparison table with multiple evaluation criteria
-        - Recommends the best-performing algorithm for the specific dataset
-
-        ## Help & Troubleshooting
-        """)
-
-        with st.expander("Common Issues & Solutions"):
+            1.  **Dataset Inspection**: Analyzes data structure, identifies feature types, and detects problem type (classification vs regression).
+            2.  **Type-Aware Preprocessing**: Applies transformations, handles missing values, and prepares data.
+            3.  **Multi-Algorithm Evaluation**: Trains and evaluates multiple suitable algorithms on the prepared data.
+            4.  **Transparent Recommendation**: Ranks algorithms by performance and recommends the best one.
+            """)
+        
+        with st.expander("⁉️ Help & Troubleshooting"):
             st.markdown("""
             **❌ "No models were successfully trained"**
             - Dataset may have insufficient columns or rows
