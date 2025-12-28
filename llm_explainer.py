@@ -13,11 +13,21 @@ from typing import Dict, Optional, Any, List, Tuple
 
 try:
     import google.generativeai as genai
-    GEMINI_AVAILABLE = True
     
     # Configure Gemini
-    genai.configure(api_key="AIzaSyDymxtzAXfQhKrwBLLp9Xdt5Br6d2iq8w0")
-    model = genai.GenerativeModel("models/gemini-flash-lite-latest")
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        try:
+            api_key = st.secrets["GEMINI_API_KEY"]
+        except:
+            pass
+            
+    if api_key:
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel("models/gemini-1.5-flash")
+        GEMINI_AVAILABLE = True
+    else:
+        GEMINI_AVAILABLE = False
 except ImportError:
     GEMINI_AVAILABLE = False
 
@@ -66,7 +76,17 @@ def generate_explanation(structured_results: Dict[str, Any], user_question: str 
         str: Generated explanation
     """
     if not GEMINI_AVAILABLE:
-        return "Gemini API is not available. Please check your configuration."
+        # Fallback: Simple rule-based explanation
+        best_algo = structured_results.get('best_algorithm', 'Unknown')
+        metrics = structured_results.get('metrics', {})
+        metric_str = ", ".join([f"{k}: {v:.4f}" for k, v in metrics.items()]) if metrics else "N/A"
+        
+        return (
+            f"**AI explanation unavailable. Showing system-based reasoning.**\n\n"
+            f"Based on the analysis, **{best_algo}** was selected as the best model.\n"
+            f"Performance metrics: {metric_str}\n\n"
+            f"This model was chosen because it achieved the highest performance on the held-out test set."
+        )
     
     system_prompt = """
     You are an AI assistant explaining the results of an automated machine learning pipeline.
@@ -142,9 +162,6 @@ def render_ai_explanation_panel(structured_results: Dict[str, Any]):
     Args:
         structured_results: Dictionary containing the structured ML pipeline results
     """
-    if not is_available():
-        st.warning("Gemini API is not available. Some features may be limited.")
-        return
     
     # Create a container for the AI panel
     with st.container():
