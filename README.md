@@ -1,577 +1,391 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-Powered ML Algorithm Recommender</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<div align="center">
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+# 🤖 AI-Powered ML Algorithm Recommender
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+### *Smart, Transparent, One-Click Machine Learning Pipeline*
 
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            margin: 40px 0;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: fadeInUp 1s ease-out;
-        }
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg?style=for-the-badge&logo=python)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)](https://streamlit.io/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+[🚀 Quick Start](#-quick-start) • [✨ Features](#-features) • [🎯 Demo](#-demo) • [📖 Documentation](#-how-it-works)
 
-        .hero h1 {
-            font-size: 3em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            animation: pulse 2s ease-in-out infinite;
-        }
+![Demo](https://img.shields.io/badge/Status-Hackathon_Ready-success?style=for-the-badge)
+![AI Powered](https://img.shields.io/badge/AI-Powered-purple?style=for-the-badge)
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+</div>
 
-        .hero .tagline {
-            font-size: 1.3em;
-            color: #555;
-            margin: 20px 0;
-        }
+---
 
-        .badges {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 30px 0;
-        }
+## 🧠 **What Makes This AI-Powered?**
 
-        .badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
-            animation: float 3s ease-in-out infinite;
-        }
+> **Unlike black-box AutoML tools**, our system uses **intelligent AI agents** that make transparent, adaptive decisions at every step. Perfect for **learning, debugging, and real-world messy data**.
 
-        .badge:nth-child(2) { animation-delay: 0.5s; }
-        .badge:nth-child(3) { animation-delay: 1s; }
-        .badge:nth-child(4) { animation-delay: 1.5s; }
+<table>
+<tr>
+<td width="25%" align="center">
+<img src="https://img.icons8.com/fluency/96/artificial-intelligence.png" width="64"/>
+<br><b>Smart Detection</b>
+<br>AI analyzes target distribution & auto-detects problem type
+</td>
+<td width="25%" align="center">
+<img src="https://img.icons8.com/fluency/96/module.png" width="64"/>
+<br><b>Adaptive Pipeline</b>
+<br>Preprocessing based on skewness, collinearity, not fixed rules
+</td>
+<td width="25%" align="center">
+<img src="https://img.icons8.com/fluency/96/engineering.png" width="64"/>
+<br><b>Dynamic Selection</b>
+<br>AI picks 7 best from 21 algorithms based on dataset traits
+</td>
+<td width="25%" align="center">
+<img src="https://img.icons8.com/fluency/96/transparency.png" width="64"/>
+<br><b>Full Transparency</b>
+<br>See WHY each decision was made—not a black box
+</td>
+</tr>
+</table>
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
+### 🎯 **Key AI Capabilities**
 
-        /* AI Highlight Section */
-        .ai-section {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 40px;
-            border-radius: 20px;
-            margin: 40px 0;
-            color: white;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            animation: slideInLeft 1s ease-out;
-        }
+```diff
++ 🧠 Intelligent Problem Detection: Binary/Multiclass/Regression auto-identified
++ 🔧 Adaptive Preprocessing: Type-aware imputation, smart scaling selection
++ ⚙️ Dynamic Algorithm Pool: 21 algorithms, 7 selected based on data characteristics
++ 📊 Empirical Validation: 5-fold cross-validation with transparent metrics
++ 🎓 Educational Value: Shows reasoning—perfect for learning ML workflows
+```
 
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
+---
 
-        .ai-section h2 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
+## 📊 **Stats at a Glance**
 
-        .ai-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
+<div align="center">
 
-        .ai-card {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+| 🤖 Algorithms | 🔄 Cross-Validation | ⚡ Time to Results | 🎯 Accuracy |
+|:---:|:---:|:---:|:---:|
+| **21** ML Models | **5-Fold** CV | **< 60 sec** | Ranked & Visualized |
 
-        .ai-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
+</div>
 
-        .ai-card h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
+---
 
-        /* Features Grid */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
+## ⚡ **Quick Start**
 
-        .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeIn 1s ease-out;
-        }
+```bash
+# 1️⃣ Clone the repository
+git clone https://github.com/sengobasar/Algorithm-name-recommender.git
+cd Algorithm-name-recommender
 
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-        }
+# 2️⃣ Create virtual environment
+python -m venv venv
+source venv/bin/activate          # Mac/Linux
+# venv\Scripts\activate           # Windows
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+# 3️⃣ Install dependencies & Run
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-        .feature-card h3 {
-            color: #667eea;
-            font-size: 1.8em;
-            margin-bottom: 15px;
-        }
+**🎉 That's it!** Open browser → Upload CSV → Get AI recommendations
 
-        /* Process Flow */
-        .process-flow {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            margin: 40px 0;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        }
+---
 
-        .process-flow h2 {
-            text-align: center;
-            color: #667eea;
-            font-size: 2.5em;
-            margin-bottom: 40px;
-        }
+## ✨ **Features**
 
-        .steps {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            position: relative;
-        }
+### 🔧 **Robust Data Handling**
+- ✅ **Repairs corrupted files** - handles malformed CSV/Excel
+- ✅ **Auto-detects encodings** - UTF-8, Latin-1, CP1252, ISO-8859-1
+- ✅ **Smart delimiter detection** - comma, semicolon, tab, pipe, space
+- ✅ **Cleans noisy data** - handles missing values intelligently
 
-        .step {
-            flex: 1;
-            min-width: 150px;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
+### 🧠 **Intelligent Preprocessing**
+- ✅ **Type-aware imputation** - mean/median for numerical, mode for categorical
+- ✅ **Adaptive scaling** - StandardScaler/MinMaxScaler auto-selected
+- ✅ **Smart encoding** - LabelEncoder for ordinal, OneHot for nominal
+- ✅ **Feature selection** - variance threshold, collinearity handling
 
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            margin: 0 auto 15px;
-            animation: bounce 2s ease-in-out infinite;
-        }
+### 🤖 **Multi-Algorithm Training**
+- ✅ **21 algorithms available** - dynamically selects best 7 for your data
+- ✅ **5-fold cross-validation** - robust performance estimation
+- ✅ **Parallel execution** - fast training on multiple models
+- ✅ **Adaptive metrics** - Accuracy/F1/AUC for classification, R²/RMSE/MAE for regression
 
-        .step:nth-child(2) .step-number { animation-delay: 0.3s; }
-        .step:nth-child(3) .step-number { animation-delay: 0.6s; }
-        .step:nth-child(4) .step-number { animation-delay: 0.9s; }
-        .step:nth-child(5) .step-number { animation-delay: 1.2s; }
+### 📊 **Rich Visualizations**
+- ✅ **Performance comparisons** - interactive bar charts
+- ✅ **Confusion matrices** - for classification tasks
+- ✅ **ROC curves** - AUC visualization
+- ✅ **Error plots** - regression residual analysis
+- ✅ **Downloadable results** - CSV export of all metrics
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
+---
 
-        /* Code Block */
-        .code-block {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 30px;
-            border-radius: 15px;
-            margin: 40px 0;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            animation: slideInRight 1s ease-out;
-        }
+## 🎯 **How It Works**
 
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
+```mermaid
+graph LR
+    A[📁 Upload Dataset] --> B[🔍 AI Analysis]
+    B --> C[🧹 Smart Cleaning]
+    C --> D[🧠 Adaptive Preprocessing]
+    D --> E[🤖 Train 7 Models]
+    E --> F[📊 5-Fold CV]
+    F --> G[🏆 Rank & Recommend]
+    G --> H[📈 Visualize Results]
+    
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style D fill:#f3e5f5
+    style E fill:#e8f5e9
+    style G fill:#fce4ec
+    style H fill:#fff9c4
+```
 
-        .code-block pre {
-            margin: 0;
-            line-height: 1.8;
-        }
+### 📋 **Step-by-Step Process**
 
-        .code-comment {
-            color: #6272a4;
-        }
+| Step | Process | AI Magic ✨ |
+|:---:|---------|-------------|
+| **1** | 📁 **Upload** | Handles CSV/Excel with any encoding/delimiter |
+| **2** | 🔍 **Analyze** | AI detects types, skewness, collinearity, missing patterns |
+| **3** | 🧹 **Clean** | Auto-repairs corrupted data, validates structure |
+| **4** | 🧠 **Preprocess** | Adaptive pipeline: imputation → scaling → encoding |
+| **5** | 🤖 **Train** | 7 algorithms selected from 21 based on dataset characteristics |
+| **6** | 📊 **Validate** | 5-fold cross-validation for robust metrics |
+| **7** | 🏆 **Recommend** | Best algorithm ranked with reasoning + visualizations |
 
-        .code-command {
-            color: #50fa7b;
-        }
+---
 
-        /* CTA Button */
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 1.2em;
-            font-weight: bold;
-            margin: 20px 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
+## 🤖 **Supported Algorithms**
 
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.6);
-        }
+<details open>
+<summary><b>📊 Classification Models (7 algorithms)</b></summary>
 
-        /* Stats Section */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
+- 🎯 Logistic Regression
+- 🌳 Random Forest Classifier
+- 🌲 Decision Tree Classifier
+- 📈 Naive Bayes
+- 🎨 Support Vector Machine (SVM)
+- 📍 K-Nearest Neighbors (KNN)
+- 🚀 AdaBoost Classifier
 
-        .stat-card {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            animation: scaleIn 0.8s ease-out;
-        }
+</details>
 
-        @keyframes scaleIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
+<details>
+<summary><b>📈 Regression Models (3+ algorithms)</b></summary>
 
-        .stat-number {
-            font-size: 3em;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+- 📉 Linear Regression
+- 🌳 Random Forest Regressor
+- 🌲 Decision Tree Regressor
+- *+ More selected dynamically*
 
-        .stat-label {
-            font-size: 1.1em;
-            color: #666;
-            margin-top: 10px;
-        }
+</details>
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2em;
-            }
-            
-            .steps {
-                flex-direction: column;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Hero Section -->
-        <div class="hero">
-            <h1>🤖 AI-Powered ML Algorithm Recommender</h1>
-            <p class="tagline">Smart, Transparent, One-Click Machine Learning Pipeline</p>
-            <div class="badges">
-                <span class="badge">🧠 AI-Driven</span>
-                <span class="badge">⚡ Instant Analysis</span>
-                <span class="badge">📊 21 Algorithms</span>
-                <span class="badge">🎯 Zero Config</span>
-            </div>
-            <div>
-                <a href="#quick-start" class="cta-button">🚀 Get Started</a>
-                <a href="https://github.com/sengobasar/Algorithm-name-recommender" class="cta-button">📦 GitHub</a>
-            </div>
-        </div>
+> 💡 **AI dynamically selects** the best 7 algorithms based on dataset size, class balance, feature count, and problem complexity.
 
-        <!-- AI Highlight Section -->
-        <div class="ai-section">
-            <h2>🧠 Why AI-Powered?</h2>
-            <p style="font-size: 1.2em; margin-bottom: 20px;">
-                Unlike traditional AutoML tools that work as black boxes, our system uses <strong>intelligent AI agents</strong> 
-                to make transparent, adaptive decisions at every step. Here's the AI magic:
-            </p>
-            
-            <div class="ai-features">
-                <div class="ai-card">
-                    <h3>🎯 Smart Detection</h3>
-                    <p>AI analyzes target distribution, detects problem type (binary/multiclass/regression) and adapts the entire pipeline automatically</p>
-                </div>
-                <div class="ai-card">
-                    <h3>🔧 Adaptive Pipeline</h3>
-                    <p>Intelligent preprocessing based on skewness, collinearity, feature types—not generic fixed pipelines</p>
-                </div>
-                <div class="ai-card">
-                    <h3>⚙️ Dynamic Selection</h3>
-                    <p>AI picks 7 best algorithms from 21 candidates based on dataset size, balance, and characteristics</p>
-                </div>
-                <div class="ai-card">
-                    <h3>📈 Transparent Reasoning</h3>
-                    <p>Unlike black-box AutoML, see <strong>why</strong> each decision was made—perfect for learning and trust</p>
-                </div>
-            </div>
-        </div>
+---
 
-        <!-- Stats -->
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number">21</div>
-                <div class="stat-label">ML Algorithms</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">5</div>
-                <div class="stat-label">Cross-Validation Folds</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">1</div>
-                <div class="stat-label">Click to Results</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">100%</div>
-                <div class="stat-label">Transparent</div>
-            </div>
-        </div>
+## 🌟 **What Makes Us Different**
 
-        <!-- Process Flow -->
-        <div class="process-flow">
-            <h2>⚡ How It Works in 5 Steps</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>📁 Upload</h3>
-                    <p>Drop messy CSV/Excel—AI handles broken formats, encodings</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>🔍 Analyze</h3>
-                    <p>AI detects types, skewness, collinearity, missing patterns</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>🧠 Preprocess</h3>
-                    <p>Adaptive pipeline: imputation, scaling, encoding—auto-tuned</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>🤖 Train</h3>
-                    <p>7 algorithms trained with 5-fold CV—parallel execution</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <h3>🏆 Recommend</h3>
-                    <p>Best algorithm ranked—visualizations + reasoning included</p>
-                </div>
-            </div>
-        </div>
+<table>
+<tr>
+<td width="50%">
 
-        <!-- Features -->
-        <div class="features">
-            <div class="feature-card">
-                <h3>🔧 Robust Data Handling</h3>
-                <ul>
-                    <li>✅ Repairs corrupted files</li>
-                    <li>✅ Auto-detects delimiters</li>
-                    <li>✅ Handles 4+ encodings</li>
-                    <li>✅ Cleans noisy data</li>
-                </ul>
-            </div>
-            
-            <div class="feature-card">
-                <h3>🎯 Smart Preprocessing</h3>
-                <ul>
-                    <li>✅ Type-aware imputation</li>
-                    <li>✅ Adaptive scaling selection</li>
-                    <li>✅ Intelligent encoding</li>
-                    <li>✅ Feature selection</li>
-                </ul>
-            </div>
-            
-            <div class="feature-card">
-                <h3>📊 Rich Visualizations</h3>
-                <ul>
-                    <li>✅ Performance bar charts</li>
-                    <li>✅ Confusion matrices</li>
-                    <li>✅ ROC curves</li>
-                    <li>✅ Error distribution plots</li>
-                </ul>
-            </div>
-            
-            <div class="feature-card">
-                <h3>🚀 Zero Configuration</h3>
-                <ul>
-                    <li>✅ No manual tuning needed</li>
-                    <li>✅ Auto problem detection</li>
-                    <li>✅ One-click execution</li>
-                    <li>✅ Downloadable results</li>
-                </ul>
-            </div>
-        </div>
+### 🔓 **Not a Black Box**
+Unlike AutoML tools, you see:
+- ✅ Why each preprocessing step was chosen
+- ✅ How algorithms were selected
+- ✅ Detailed performance comparisons
+- ✅ Step-by-step reasoning logs
 
-        <!-- Quick Start -->
-        <div id="quick-start" class="code-block">
-            <pre><span class="code-comment"># 🚀 Quick Start (3 Commands)</span>
+**Perfect for:** Education, debugging, understanding ML workflows
 
-<span class="code-command">git clone</span> https://github.com/sengobasar/Algorithm-name-recommender.git
-<span class="code-command">cd</span> Algorithm-name-recommender
+</td>
+<td width="50%">
 
-<span class="code-comment"># Create virtual environment</span>
-<span class="code-command">python -m venv venv</span>
-<span class="code-command">source venv/bin/activate</span>  <span class="code-comment"># Windows: venv\Scripts\activate</span>
+### 🧹 **Built for Messy Data**
+Real-world datasets are imperfect:
+- ✅ Handles corrupted files
+- ✅ Mixed encodings & delimiters
+- ✅ Missing values & noise
+- ✅ Inconsistent formats
 
-<span class="code-comment"># Install & Run</span>
-<span class="code-command">pip install -r requirements.txt</span>
-<span class="code-command">streamlit run app.py</span>
+**No preprocessing needed** - just upload!
 
-<span class="code-comment"># 🎉 Open browser → Upload dataset → Get AI recommendations!</span></pre>
-        </div>
+</td>
+</tr>
+<tr>
+<td width="50%">
 
-        <!-- Algorithms -->
-        <div class="process-flow">
-            <h2>🤖 Supported Algorithms</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
-                <div>
-                    <h3 style="color: #667eea; margin-bottom: 15px;">📊 Classification (7 Models)</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>✅ Logistic Regression</li>
-                        <li>✅ Random Forest</li>
-                        <li>✅ Decision Tree</li>
-                        <li>✅ Naive Bayes</li>
-                        <li>✅ SVM</li>
-                        <li>✅ KNN</li>
-                        <li>✅ AdaBoost</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 style="color: #764ba2; margin-bottom: 15px;">📈 Regression (3+ Models)</h3>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>✅ Linear Regression</li>
-                        <li>✅ Random Forest Regressor</li>
-                        <li>✅ Decision Tree Regressor</li>
-                        <li>✅ + More based on data</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+### ⚡ **Fast & Local**
+- ✅ Results in < 60 seconds
+- ✅ No cloud dependencies
+- ✅ Runs on your machine
+- ✅ Privacy-friendly
 
-        <!-- Key Differentiators -->
-        <div class="ai-section" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-            <h2>🌟 What Makes Us Different</h2>
-            <div class="ai-features">
-                <div class="ai-card">
-                    <h3>🔓 Not a Black Box</h3>
-                    <p>See reasoning for every decision—perfect for education and debugging</p>
-                </div>
-                <div class="ai-card">
-                    <h3>🧹 Handles Messy Data</h3>
-                    <p>Built for real-world datasets with noise, missing values, inconsistencies</p>
-                </div>
-                <div class="ai-card">
-                    <h3>⚡ Fast & Practical</h3>
-                    <p>Results in seconds—no cloud dependencies, runs locally</p>
-                </div>
-                <div class="ai-card">
-                    <h3>📚 Educational</h3>
-                    <p>Learn ML workflows—shows metrics, comparisons, and preprocessing steps</p>
-                </div>
-            </div>
-        </div>
+**Your data never leaves** your computer!
 
-        <!-- Footer CTA -->
-        <div class="hero" style="margin-top: 60px;">
-            <h2 style="color: #667eea; margin-bottom: 20px;">Ready to Try?</h2>
-            <p style="font-size: 1.2em; color: #666; margin-bottom: 30px;">
-                Transform your messy datasets into ML insights in under 60 seconds
-            </p>
-            <a href="https://github.com/sengobasar/Algorithm-name-recommender" class="cta-button">⭐ Star on GitHub</a>
-            <a href="#quick-start" class="cta-button">🚀 Get Started Now</a>
-            
-            <div style="margin-top: 40px; padding-top: 30px; border-top: 2px solid #eee;">
-                <p style="color: #999;">Built with ❤️ using Python • Streamlit • Scikit-learn</p>
-                <p style="color: #999; margin-top: 10px;">MIT License • Contributions Welcome</p>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+</td>
+<td width="50%">
+
+### 📚 **Educational**
+Learn while you work:
+- ✅ See all metrics & comparisons
+- ✅ Understand preprocessing choices
+- ✅ Compare algorithm performance
+- ✅ Export results for analysis
+
+**Great for students & researchers!**
+
+</td>
+</tr>
+</table>
+
+---
+
+## 📦 **Installation**
+
+### **Prerequisites**
+- Python 3.8 or higher
+- pip package manager
+
+### **Dependencies**
+All required packages are in `requirements.txt`:
+```
+streamlit>=1.28.0
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+plotly>=5.14.0
+openpyxl>=3.1.0
+ydata-profiling>=4.5.0  # Optional: for Auto-EDA
+```
+
+### **Optional Features**
+```bash
+# For comprehensive EDA reports
+pip install ydata-profiling
+
+# For advanced AutoML (future integration)
+pip install tpot
+```
+
+---
+
+## 🎬 **Usage Example**
+
+1. **Launch the app:**
+   ```bash
+   streamlit run app.py
+   ```
+
+2. **Upload your dataset** (CSV or Excel)
+
+3. **Select target column** from dropdown
+
+4. **Click "🚀 Run Analysis"**
+
+5. **Get results:**
+   - 🏆 Best algorithm recommendation
+   - 📊 Performance metrics for all models
+   - 📈 Interactive visualizations
+   - 💾 Downloadable comparison CSV
+
+---
+
+## 📁 **Project Structure**
+
+```
+Algorithm-name-recommender/
+│
+├── app.py                    # 🎨 Streamlit UI Application
+├── ml_recommender.py         # 🧠 Core ML Pipeline Engine
+├── ui_utils.py               # 🖥️ Console UI Utilities
+├── requirements.txt          # 📦 Dependencies
+├── iris_demo.csv             # 📊 Example Dataset
+├── README.md                 # 📖 This file
+└── venv/                     # 🐍 Virtual Environment (optional)
+```
+
+---
+
+## 🔬 **Research Foundation**
+
+This project is based on academic research focusing on:
+- **Adaptive preprocessing** based on data characteristics
+- **Transparent algorithm selection** vs black-box automation
+- **Educational ML workflows** for learning and debugging
+- **Robust data handling** for real-world imperfect datasets
+
+> 📄 *Full research paper available in repository*
+
+---
+
+## 🎓 **Use Cases**
+
+| Use Case | Description |
+|----------|-------------|
+| 🎓 **Education** | Learn ML workflows with transparent reasoning |
+| 🔬 **Research** | Quick baseline comparisons for experiments |
+| 💼 **Business** | Fast prototyping for data analysis projects |
+| 🧪 **Data Science** | Explore algorithm performance on new datasets |
+| 🏆 **Hackathons** | Rapid ML pipeline for competitions |
+
+---
+
+## 🚀 **Future Roadmap**
+
+- [ ] 🎛️ Hyperparameter tuning with Optuna
+- [ ] 🔍 Model explainability (SHAP, LIME)
+- [ ] 📝 Text classification support
+- [ ] ⏰ Time series analysis
+- [ ] 🏗️ Deep learning integration
+- [ ] 🌐 REST API endpoint
+- [ ] 📊 Benchmark vs AutoGluon/Auto-sklearn
+
+---
+
+## 🤝 **Contributing**
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 **Author**
+
+**Sengo Basar**
+- GitHub: [@sengobasar](https://github.com/sengobasar)
+- Project: [Algorithm-name-recommender](https://github.com/sengobasar/Algorithm-name-recommender)
+
+---
+
+## 🙏 **Acknowledgments**
+
+Built with:
+- 🐍 Python & Scikit-learn for ML
+- 🎨 Streamlit for beautiful UI
+- 📊 Plotly for interactive visualizations
+- 🧮 Pandas & NumPy for data processing
+
+---
+
+<div align="center">
+
+### ⭐ **If you find this useful, please star the repo!**
+
+[![Star this repo](https://img.shields.io/github/stars/sengobasar/Algorithm-name-recommender?style=social)](https://github.com/sengobasar/Algorithm-name-recommender)
+
+**Made with ❤️ for the ML community**
+
+</div>
