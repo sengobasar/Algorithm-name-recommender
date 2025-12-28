@@ -7,20 +7,33 @@
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg?style=for-the-badge&logo=python)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)](https://streamlit.io/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![Gemini AI](https://img.shields.io/badge/Gemini-AI-blue?style=for-the-badge&logo=google)](https://ai.google.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-[🚀 Quick Start](#-quick-start) • [✨ Features](#-features) • [🎯 Demo](#-demo) • [📖 Documentation](#-how-it-works)
-
-![Demo](https://img.shields.io/badge/Status-Hackathon_Ready-success?style=for-the-badge)
 ![AI Powered](https://img.shields.io/badge/AI-Powered-purple?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
 
 </div>
 
 ---
 
-## 🧠 **What Makes This AI-Powered?**
+## 🧠 **Why This Project Exists**
 
-> **Unlike black-box AutoML tools**, our system uses **intelligent AI agents** that make transparent, adaptive decisions at every step. Perfect for **learning, debugging, and real-world messy data**.
+There are many machine learning algorithms for classification and regression, but **choosing the right one for a given dataset is difficult** and often requires expertise and repeated experimentation.
+
+In real-world scenarios, datasets are rarely clean—they contain **missing values, mixed feature types, inconsistent formats, and noise**. This makes manual model selection slow, error-prone, and frustrating, especially for beginners and early-stage analysis.
+
+While **AutoML tools exist**, most assume clean data and operate as **black boxes**, providing little insight into why a model was chosen or how the data was processed.
+
+### **This project addresses that gap.**
+
+Unlike black-box AutoML systems, our **AI-powered recommender makes transparent, adaptive decisions at every step**—from data repair and preprocessing to model selection and evaluation—providing clear comparisons, interpretable metrics, and explainable outcomes.
+
+**The result:** A system that is **practical for real-world messy data, educational for learners, and trustworthy for experimentation.**
+
+---
+
+## 🎯 **What Makes This AI-Powered?**
 
 <table>
 <tr>
@@ -40,22 +53,25 @@
 <br>AI picks 7 best from 21 algorithms based on dataset traits
 </td>
 <td width="25%" align="center">
-<img src="https://img.icons8.com/fluency/96/transparency.png" width="64"/>
-<br><b>Full Transparency</b>
-<br>See WHY each decision was made—not a black box
+<img src="https://img.icons8.com/fluency/96/google-logo.png" width="64"/>
+<br><b>Gemini AI Explanations</b>
+<br>Natural language reasoning for every decision made
 </td>
 </tr>
 </table>
 
-### 🎯 **Key AI Capabilities**
+### 🌟 **Gemini AI Integration**
 
-```diff
-+ 🧠 Intelligent Problem Detection: Binary/Multiclass/Regression auto-identified
-+ 🔧 Adaptive Preprocessing: Type-aware imputation, smart scaling selection
-+ ⚙️ Dynamic Algorithm Pool: 21 algorithms, 7 selected based on data characteristics
-+ 📊 Empirical Validation: 5-fold cross-validation with transparent metrics
-+ 🎓 Educational Value: Shows reasoning—perfect for learning ML workflows
-```
+Our system leverages **Google's Gemini AI** to provide human-readable explanations:
+
+- 📊 **Structured Analysis**: AI receives detailed dataset characteristics (skewness, missing patterns, feature types) in structured format
+- 🧠 **Intelligent Reasoning**: Gemini explains WHY specific preprocessing steps were chosen based on your data's nature
+- 🎯 **Model Justification**: Get clear explanations for why certain algorithms perform better on your dataset
+- 📝 **Natural Language Reports**: Converts technical metrics into easy-to-understand insights
+- 🔍 **Dataset Profiling**: AI analyzes your data distribution, quality issues, and suggests improvements
+
+**Example Output:**
+> *"Your dataset shows high skewness in 3 numerical features and 40% missing values in categorical columns. I applied log transformation for skewed features and mode imputation for categoricals. Random Forest was selected as the best algorithm because it handles non-linear relationships well and is robust to your data's moderate class imbalance (60:40 ratio)."*
 
 ---
 
@@ -73,6 +89,45 @@
 
 ## ⚡ **Quick Start**
 
+### 🔑 **Step 1: Configure Gemini AI (Required)**
+
+This project uses **Gemini AI** for explainable analysis and reasoning.
+
+#### **Option A: Environment Variable (Recommended)**
+
+**Mac / Linux:**
+```bash
+export GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
+```
+
+**Windows (PowerShell):**
+```bash
+setx GEMINI_API_KEY "YOUR_GEMINI_API_KEY"
+```
+
+**Windows (Command Prompt):**
+```bash
+set GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+```
+
+> ⚠️ **Important:** Restart your terminal after setting the key.
+
+#### **Option B: Direct Configuration**
+
+Create a `.env` file in the project root:
+```env
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+```
+
+#### **🔗 Get Your API Key:**
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create a new API key (free tier available)
+3. Copy and set it as shown above
+
+---
+
+### 🚀 **Step 2: Install & Run**
+
 ```bash
 # 1️⃣ Clone the repository
 git clone https://github.com/sengobasar/Algorithm-name-recommender.git
@@ -88,7 +143,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-**🎉 That's it!** Open browser → Upload CSV → Get AI recommendations
+**🎉 That's it!** Open browser → Upload CSV → Get AI-powered recommendations
 
 ---
 
@@ -106,7 +161,14 @@ streamlit run app.py
 - ✅ **Smart encoding** - LabelEncoder for ordinal, OneHot for nominal
 - ✅ **Feature selection** - variance threshold, collinearity handling
 
-### 🤖 **Multi-Algorithm Training**
+### 🤖 **AI-Powered Explanations (Gemini Integration)**
+- ✅ **Dataset profiling** - AI analyzes data characteristics in natural language
+- ✅ **Preprocessing reasoning** - explains WHY each step was chosen
+- ✅ **Model justification** - clear explanation of algorithm selection
+- ✅ **Performance insights** - interprets metrics in context of your data
+- ✅ **Improvement suggestions** - actionable recommendations for better results
+
+### 🎯 **Multi-Algorithm Training**
 - ✅ **21 algorithms available** - dynamically selects best 7 for your data
 - ✅ **5-fold cross-validation** - robust performance estimation
 - ✅ **Parallel execution** - fast training on multiple models
@@ -131,14 +193,16 @@ graph LR
     D --> E[🤖 Train 7 Models]
     E --> F[📊 5-Fold CV]
     F --> G[🏆 Rank & Recommend]
-    G --> H[📈 Visualize Results]
+    G --> H[💬 Gemini Explains]
+    H --> I[📈 Visual Results]
     
     style A fill:#e3f2fd
     style B fill:#fff3e0
     style D fill:#f3e5f5
     style E fill:#e8f5e9
     style G fill:#fce4ec
-    style H fill:#fff9c4
+    style H fill:#e1bee7
+    style I fill:#fff9c4
 ```
 
 ### 📋 **Step-by-Step Process**
@@ -151,7 +215,57 @@ graph LR
 | **4** | 🧠 **Preprocess** | Adaptive pipeline: imputation → scaling → encoding |
 | **5** | 🤖 **Train** | 7 algorithms selected from 21 based on dataset characteristics |
 | **6** | 📊 **Validate** | 5-fold cross-validation for robust metrics |
-| **7** | 🏆 **Recommend** | Best algorithm ranked with reasoning + visualizations |
+| **7** | 🏆 **Recommend** | Best algorithm ranked with performance scores |
+| **8** | 💬 **Explain** | **Gemini AI generates natural language reasoning** |
+| **9** | 📈 **Visualize** | Interactive charts and downloadable reports |
+
+---
+
+## 💬 **Gemini AI Explanation System**
+
+### **How It Works:**
+
+1. **Structured Data Extraction:**
+   ```python
+   {
+     "dataset_shape": (150, 5),
+     "missing_values": {"column_name": 15%},
+     "skewness": {"feature_1": 2.3, "feature_2": -0.5},
+     "feature_types": {"numerical": 4, "categorical": 1},
+     "class_distribution": {"class_0": 60%, "class_1": 40%},
+     "correlation": "high collinearity detected"
+   }
+   ```
+
+2. **AI Reasoning Generation:**
+   - Gemini receives structured metrics
+   - Analyzes dataset nature and characteristics
+   - Generates human-readable explanations
+   - Justifies preprocessing and model choices
+
+3. **Transparent Output:**
+   - **Why this preprocessing?** - Based on your data's skewness and missing patterns
+   - **Why this algorithm?** - Explains performance in context of dataset traits
+   - **What can improve?** - Actionable suggestions for better results
+
+### **Example Explanation:**
+
+> **Dataset Analysis:**
+> Your dataset has 150 samples with 5 features. I detected 15% missing values in 'age' column and high skewness (2.3) in 'income'. The target variable shows moderate class imbalance (60:40).
+>
+> **Preprocessing Decisions:**
+> - Applied median imputation for 'age' (skewed distribution, robust to outliers)
+> - Log transformation on 'income' (reduces skewness from 2.3 to 0.4)
+> - StandardScaler chosen over MinMaxScaler (data contains outliers)
+>
+> **Model Selection:**
+> Random Forest achieved 94.5% accuracy because:
+> - Handles non-linear relationships well
+> - Robust to class imbalance without resampling
+> - Not sensitive to feature scaling (good for mixed data types)
+>
+> **Suggestions:**
+> Consider collecting more samples for the minority class or try SMOTE if performance needs improvement.
 
 ---
 
@@ -195,7 +309,7 @@ Unlike AutoML tools, you see:
 - ✅ Why each preprocessing step was chosen
 - ✅ How algorithms were selected
 - ✅ Detailed performance comparisons
-- ✅ Step-by-step reasoning logs
+- ✅ Natural language explanations via Gemini AI
 
 **Perfect for:** Education, debugging, understanding ML workflows
 
@@ -218,21 +332,21 @@ Real-world datasets are imperfect:
 
 ### ⚡ **Fast & Local**
 - ✅ Results in < 60 seconds
-- ✅ No cloud dependencies
 - ✅ Runs on your machine
 - ✅ Privacy-friendly
+- ✅ No data uploaded to cloud (except AI explanations)
 
-**Your data never leaves** your computer!
+**Your raw data stays local!**
 
 </td>
 <td width="50%">
 
-### 📚 **Educational**
+### 📚 **Educational & Trustworthy**
 Learn while you work:
 - ✅ See all metrics & comparisons
-- ✅ Understand preprocessing choices
+- ✅ Understand preprocessing choices via AI
 - ✅ Compare algorithm performance
-- ✅ Export results for analysis
+- ✅ Get improvement suggestions
 
 **Great for students & researchers!**
 
@@ -247,6 +361,7 @@ Learn while you work:
 ### **Prerequisites**
 - Python 3.8 or higher
 - pip package manager
+- **Gemini API Key** (free tier available)
 
 ### **Dependencies**
 All required packages are in `requirements.txt`:
@@ -256,7 +371,9 @@ pandas>=2.0.0
 numpy>=1.24.0
 scikit-learn>=1.3.0
 plotly>=5.14.0
+google-generativeai>=0.3.0
 openpyxl>=3.1.0
+python-dotenv>=1.0.0
 ydata-profiling>=4.5.0  # Optional: for Auto-EDA
 ```
 
@@ -273,19 +390,22 @@ pip install tpot
 
 ## 🎬 **Usage Example**
 
-1. **Launch the app:**
+1. **Set Gemini API Key** (see Quick Start section)
+
+2. **Launch the app:**
    ```bash
    streamlit run app.py
    ```
 
-2. **Upload your dataset** (CSV or Excel)
+3. **Upload your dataset** (CSV or Excel)
 
-3. **Select target column** from dropdown
+4. **Select target column** from dropdown
 
-4. **Click "🚀 Run Analysis"**
+5. **Click "🚀 Run Analysis"**
 
-5. **Get results:**
-   - 🏆 Best algorithm recommendation
+6. **Get AI-powered results:**
+   - 🏆 Best algorithm recommendation with reasoning
+   - 💬 Natural language explanation from Gemini
    - 📊 Performance metrics for all models
    - 📈 Interactive visualizations
    - 💾 Downloadable comparison CSV
@@ -299,8 +419,10 @@ Algorithm-name-recommender/
 │
 ├── app.py                    # 🎨 Streamlit UI Application
 ├── ml_recommender.py         # 🧠 Core ML Pipeline Engine
+├── gemini_explainer.py       # 💬 Gemini AI Integration
 ├── ui_utils.py               # 🖥️ Console UI Utilities
 ├── requirements.txt          # 📦 Dependencies
+├── .env.example              # 🔑 API Key Template
 ├── iris_demo.csv             # 📊 Example Dataset
 ├── README.md                 # 📖 This file
 └── venv/                     # 🐍 Virtual Environment (optional)
@@ -315,6 +437,7 @@ This project is based on academic research focusing on:
 - **Transparent algorithm selection** vs black-box automation
 - **Educational ML workflows** for learning and debugging
 - **Robust data handling** for real-world imperfect datasets
+- **Explainable AI** through natural language generation
 
 > 📄 *Full research paper available in repository*
 
@@ -324,23 +447,24 @@ This project is based on academic research focusing on:
 
 | Use Case | Description |
 |----------|-------------|
-| 🎓 **Education** | Learn ML workflows with transparent reasoning |
-| 🔬 **Research** | Quick baseline comparisons for experiments |
-| 💼 **Business** | Fast prototyping for data analysis projects |
-| 🧪 **Data Science** | Explore algorithm performance on new datasets |
-| 🏆 **Hackathons** | Rapid ML pipeline for competitions |
+| 🎓 **Education** | Learn ML workflows with AI-generated explanations |
+| 🔬 **Research** | Quick baseline comparisons with reasoning |
+| 💼 **Business** | Fast prototyping with interpretable results |
+| 🧪 **Data Science** | Explore algorithm performance with insights |
+| 👨‍💻 **Development** | Understand why models work on your data |
 
 ---
 
 ## 🚀 **Future Roadmap**
 
 - [ ] 🎛️ Hyperparameter tuning with Optuna
-- [ ] 🔍 Model explainability (SHAP, LIME)
+- [ ] 🔍 Enhanced explainability (SHAP, LIME)
 - [ ] 📝 Text classification support
 - [ ] ⏰ Time series analysis
 - [ ] 🏗️ Deep learning integration
 - [ ] 🌐 REST API endpoint
 - [ ] 📊 Benchmark vs AutoGluon/Auto-sklearn
+- [ ] 🤖 Multi-modal AI explanations (charts + text)
 
 ---
 
@@ -374,6 +498,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Built with:
 - 🐍 Python & Scikit-learn for ML
+- 🤖 Google Gemini AI for explanations
 - 🎨 Streamlit for beautiful UI
 - 📊 Plotly for interactive visualizations
 - 🧮 Pandas & NumPy for data processing
