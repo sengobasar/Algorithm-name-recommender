@@ -1544,29 +1544,51 @@ def display_results(analysis_results):
     col1, col2 = st.columns([2, 1])
     
     with col1:
+        # Inject custom CSS for the expander cards
         st.markdown("""
-        <div class='success-box'>
-            <h2>🎉 Analysis Complete!</h2>
-            <p>Successfully processed and analyzed your dataset!</p>
-        </div>
+        <style>
+        div[data-testid="stExpander"] {
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(145deg, #212121, #000);
+            margin-bottom: 10px; /* Add space between cards */
+        }
+        div[data-testid="stExpander"] summary:hover {
+            background: linear-gradient(145deg, #444, #111);
+        }
+        div[data-testid="stExpander"] summary {
+            background: linear-gradient(145deg, #333, #000);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: #00ffeb;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 1.1em;
+        }
+        </style>
         """, unsafe_allow_html=True)
         
-        st.subheader("🎯 Best Algorithm: " + analysis_results['best_algorithm'])
+        # Card 1: Analysis Complete
+        with st.expander("🎉 Analysis Complete!", expanded=True):
+            st.success("Successfully processed and analyzed your dataset!")
+
+        # Card 2: Best Algorithm & Metrics
+        with st.expander("🎯 Best Algorithm & Metrics", expanded=True):
+            metric_name, metric_value = list(analysis_results['best_score'].items())[0]
+            st.subheader("Best Algorithm: " + analysis_results['best_algorithm'])
+            st.metric(f"Best {metric_name}", f"{metric_value:.4f}")
         
-        # Display metrics
-        st.subheader("📊 Performance Metrics")
-        metric_name, metric_value = list(analysis_results['best_score'].items())[0]
-        st.metric(f"Best {metric_name}", f"{metric_value:.4f}")
-        
-        # Display comparison table
-        st.subheader("📈 Model Comparison")
-        st.dataframe(analysis_results['comparison_df'].style.highlight_max(axis=0))
-        
-        # Display visualization if available
-        if 'visualization_figure' in analysis_results and analysis_results['visualization_figure'] is not None:
-            st.subheader("📊 Performance Visualization")
-            st.plotly_chart(analysis_results['visualization_figure'], use_container_width=True)
-    
+        # Card 3: Detailed Comparison
+        with st.expander("📈 Model Comparison & Visualization", expanded=True):
+            st.subheader("Model Leaderboard")
+            st.dataframe(analysis_results['comparison_df'].style.highlight_max(axis=0))
+            
+            # Display visualization if available
+            if 'visualization_figure' in analysis_results and analysis_results['visualization_figure'] is not None:
+                st.subheader("Performance Visualization")
+                st.plotly_chart(analysis_results['visualization_figure'], use_container_width=True)
+
     # Add AI explanation panel to the right column if active
     # This is the ONLY place where the AI panel is rendered
     if st.session_state.get("ai_active", False):
