@@ -2,6 +2,7 @@
 # Handles single columns, missing features, and all edge cases
 
 import streamlit as st
+from streamlit import components
 import pandas as pd
 import numpy as np
 import warnings
@@ -1284,15 +1285,19 @@ def main():
 
         st.markdown('<div style="margin-top: -130px;"></div>', unsafe_allow_html=True)
 
-        uploaded_file = st.file_uploader(
-            "Choose a file",
-            type=['csv', 'xlsx', 'xls'],
-            help="Need at least 2 columns and 10+ rows for ML"
-        )
+        # Loading animation container (initially hidden)
+        loading_container = st.empty()
         
-        if uploaded_file:
-            display_success(f"File loaded: {uploaded_file.name}")
-            
+        # File uploader
+        st.markdown("### 📤 Upload Your Dataset")
+        uploaded_file = None
+        
+        # Using the custom file uploader
+        with st.container():
+            uploaded_file = st.file_uploader(
+                "Choose a file",
+                type=['csv', 'xlsx', 'xls'],
+                help="Need at least 2 columns and 10+ rows for ML")
             target_column = st.text_input(
                 "Target column (optional)", 
                 help="Leave blank to auto-detect (uses last column)"
@@ -1363,7 +1368,6 @@ div.stButton > button span {
 </style>
 """
             st.markdown(css, unsafe_allow_html=True)
-            run_analysis = st.button("Run Analysis", type="primary", key="run_analysis")
         
         st.markdown("---")
         st.markdown("### Dataset Requirements")
@@ -1395,8 +1399,14 @@ div.stButton > button span {
                 - Performance metrics
             """)
     
+    # Clear loading container if not analyzing
+    if 'run_analysis' in st.session_state and not st.session_state.run_analysis:
+        loading_container.empty()
+        
     # Main content
     if uploaded_file:
+        # Add Run Analysis button only when file is uploaded
+        run_analysis = st.button("Run Analysis", type="primary", key="run_analysis")
         # Show analysis results if available
         if st.session_state.get("analysis_done") and st.session_state.analysis_results:
             # Display results
@@ -1459,42 +1469,189 @@ div.stButton > button span {
                 st.markdown('</div>', unsafe_allow_html=True)
         
         if run_analysis:
-            with st.spinner("Analyzing dataset and selecting best algorithms..."):
-                try:
-                    uploaded_file.seek(0)
-                    
-                    recommender = IntelligentMLRecommendationSystem()
-                    results = recommender.run_complete_analysis(
-                        data_source=uploaded_file,
-                        target_column=target_column if target_column else None
-                    )
-                    
-                    # Store results in session state
-                    st.session_state.analysis_results = results
-                    st.session_state.analysis_done = True
-                    st.session_state.structured_results = {
-                        'best_algorithm': results['best_algorithm'],
-                        'metrics': results['best_score'],
-                        'model_comparison': results['comparison_df'].to_dict(),
-                        'problem_type': results.get('problem_type', 'unknown')
-                    }
-                    
-                    st.balloons()
-                    st.rerun()  # Rerun to update the UI with the new state
-                    
-                except Exception as e:
-                    st.markdown(f"""
-                    <div class='error-box'>
-                        <h3>❌ File Processing Error</h3>
-                        <p>{str(e)}</p>
+            # Show loading animation in the container above file upload
+            with loading_container.container():
+                animation_html = """
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body, html {
+                            margin: 0;
+                            padding: 0;
+                            height: 100%;
+                            width: 100%;
+                            overflow: hidden;
+                        }
+                        .main-container {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100%;
+                            width: 100%;
+                            background: transparent;
+                        }
+                        .loader {
+                            width: 100%;
+                            max-width: 400px;
+                            margin: 0 auto;
+                        }
+                        .trace-bg {
+                            stroke: #252525;
+                            stroke-width: 1.8;
+                            fill: none;
+                        }
+                        .trace-flow {
+                            stroke-width: 1.8;
+                            fill: none;
+                            stroke-dasharray: 40 400;
+                            stroke-dashoffset: 438;
+                            filter: drop-shadow(0 0 6px currentColor);
+                            animation: flow 3s cubic-bezier(0.5, 0, 0.9, 1) infinite;
+                        }
+                        .blue2 { stroke: #399fff; color: #399fff; }
+                        .blue { stroke: #399fff; color: #399fff; }
+                        @keyframes flow { to { stroke-dashoffset: 0; } }
+                        .loading-text {
+                            text-align: center;
+                            margin-top: 20px;
+                            font-size: 18px;
+                            color: #399fff;
+                            font-family: Arial, sans-serif;
+                        }
+                        .loading-container {
+                            padding: 2rem;
+                            text-align: center;
+                            background: transparent;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="loading-container">
+                        <div class="main-container">
+                            <div class="loader">
+                                <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="chipGradient" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#2d2d2d"></stop>
+                                            <stop offset="100%" stop-color="#0f0f0f"></stop>
+                                        </linearGradient>
+                                        <linearGradient id="textGradient" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#eeeeee"></stop>
+                                            <stop offset="100%" stop-color="#888888"></stop>
+                                        </linearGradient>
+                                        <linearGradient id="pinGradient" x1="1" y1="0" x2="0" y2="0">
+                                            <stop offset="0%" stop-color="#bbbbbb"></stop>
+                                            <stop offset="50%" stop-color="#888888"></stop>
+                                            <stop offset="100%" stop-color="#555555"></stop>
+                                        </linearGradient>
+                                    </defs>
+                                    <g id="traces">
+                                        <path d="M100 100 H200 V210 H326" class="trace-bg"></path>
+                                        <path d="M100 100 H200 V210 H326" class="trace-flow blue2"></path>
+                                        <path d="M80 180 H180 V230 H326" class="trace-bg"></path>
+                                        <path d="M80 180 H180 V230 H326" class="trace-flow blue"></path>
+                                        <path d="M60 260 H150 V250 H326" class="trace-bg"></path>
+                                        <path d="M60 260 H150 V250 H326" class="trace-flow blue2"></path>
+                                        <path d="M100 350 H200 V270 H326" class="trace-bg"></path>
+                                        <path d="M100 350 H200 V270 H326" class="trace-flow blue"></path>
+                                        <path d="M700 90 H560 V210 H474" class="trace-bg"></path>
+                                        <path d="M700 90 H560 V210 H474" class="trace-flow blue"></path>
+                                        <path d="M740 160 H580 V230 H474" class="trace-bg"></path>
+                                        <path d="M740 160 H580 V230 H474" class="trace-flow blue2"></path>
+                                        <path d="M720 250 H590 V250 H474" class="trace-bg"></path>
+                                        <path d="M720 250 H590 V250 H474" class="trace-flow blue"></path>
+                                        <path d="M680 340 H570 V270 H474" class="trace-bg"></path>
+                                        <path d="M680 340 H570 V270 H474" class="trace-flow blue2"></path>
+                                    </g>
+                                    <rect x="330" y="190" width="140" height="100" rx="20" ry="20" fill="url(#chipGradient)" stroke="#222" stroke-width="3" filter="drop-shadow(0 0 6px rgba(0,0,0,0.8))"></rect>
+                                    <g>
+                                        <rect x="322" y="205" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+                                        <rect x="322" y="225" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+                                        <rect x="322" y="245" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+                                        <rect x="322" y="265" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+                                    </g>
+                                    <g>
+                                        <rect x="470" y="205" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+                                        <rect x="470" y="225" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+                                        <rect x="470" y="245" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+                                        <rect x="470" y="265" width="8" height="10" fill="url(#pinGradient)" rx="2"></rect>
+                                    </g>
+                                    <text x="400" y="240" font-family="Arial, sans-serif" font-size="22" fill="url(#textGradient)" text-anchor="middle" alignment-baseline="middle">ML</text>
+                                    <circle cx="100" cy="100" r="5" fill="black"></circle>
+                                    <circle cx="80" cy="180" r="5" fill="black"></circle>
+                                    <circle cx="60" cy="260" r="5" fill="black"></circle>
+                                    <circle cx="100" cy="350" r="5" fill="black"></circle>
+                                    <circle cx="700" cy="90" r="5" fill="black"></circle>
+                                    <circle cx="740" cy="160" r="5" fill="black"></circle>
+                                    <circle cx="720" cy="250" r="5" fill="black"></circle>
+                                    <circle cx="680" cy="340" r="5" fill="black"></circle>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="loading-text">Analyzing dataset and selecting best algorithms...</div>
                     </div>
-                    """, unsafe_allow_html=True)
-                    
-                    # Show processing log if available
-                    if 'recommender' in locals() and recommender.log:
-                        with st.expander("🔍 Detailed Processing Log"):
-                            for log_entry in recommender.log:
-                                st.text(log_entry)
+                </body>
+                </html>
+                """
+                
+                # Display the animation with clean styling
+                st.markdown("""
+                <style>
+                    .loading-wrapper {
+                        position: relative;
+                        margin: 0 auto;
+                        padding: 20px 0;
+                        max-width: 600px;
+                    }
+                    iframe[title*="streamlit"] {
+                        margin: 0 auto;
+                        display: block;
+                        border: none;
+                    }
+                </style>
+                <div class="loading-wrapper">
+                """, unsafe_allow_html=True)
+                
+                components.html(animation_html, height=300, scrolling=False)
+                st.markdown("</div>", unsafe_allow_html=True)
+            
+            try:
+                uploaded_file.seek(0)
+                
+                recommender = IntelligentMLRecommendationSystem()
+                results = recommender.run_complete_analysis(
+                    data_source=uploaded_file,
+                    target_column=target_column if target_column else None
+                )
+                
+                # Store results in session state
+                st.session_state.analysis_results = results
+                st.session_state.analysis_done = True
+                st.session_state.structured_results = {
+                    'best_algorithm': results['best_algorithm'],
+                    'metrics': results['best_score'],
+                    'model_comparison': results['comparison_df'].to_dict(),
+                    'problem_type': results.get('problem_type', 'unknown')
+                }
+                
+                loading_container.empty()
+                st.balloons()
+                st.rerun()  # Rerun to update the UI with the new state
+                
+            except Exception as e:
+                st.markdown(f"""
+                <div class='error-box'>
+                    <h3>❌ File Processing Error</h3>
+                    <p>{str(e)}</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Show processing log if available
+                if 'recommender' in locals() and recommender.log:
+                    with st.expander("🔍 Detailed Processing Log"):
+                        for log_entry in recommender.log:
+                            st.text(log_entry)
     else:
         # Welcome message
         st.info("👈 Upload a dataset to get started!")
@@ -1595,6 +1752,7 @@ def display_results(analysis_results):
     if st.session_state.get("ai_active", False):
         with col2:
             render_ai_explanation_panel(st.session_state.structured_results)
+
 
 if __name__ == "__main__":
     main()
