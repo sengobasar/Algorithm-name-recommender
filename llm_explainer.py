@@ -11,15 +11,31 @@ import json
 import streamlit as st
 from typing import Dict, Optional, Any, List, Tuple
 
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+GEMINI_AVAILABLE = False
+model = None
+
 try:
     import google.generativeai as genai
-    GEMINI_AVAILABLE = True
     
-    # Configure Gemini
-    genai.configure(api_key="AIzaSyDymxtzAXfQhKrwBLLp9Xdt5Br6d2iq8w0")
-    model = genai.GenerativeModel("models/gemini-flash-lite-latest")
+    # Get API key from environment variables
+    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+    
+    if not GEMINI_API_KEY:
+        logger.warning("GEMINI_API_KEY not found in environment variables")
+    else:
+        # Configure Gemini
+        genai.configure(api_key=GEMINI_API_KEY)
+        model = genai.GenerativeModel("models/gemini-flash-lite-latest")
+        GEMINI_AVAILABLE = True
+        
 except ImportError:
-    GEMINI_AVAILABLE = False
+    logger.warning("google.generativeai module not found. Some features will be disabled.")
 
 # Set up logging
 logger = logging.getLogger(__name__)

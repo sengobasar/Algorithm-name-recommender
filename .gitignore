@@ -4,6 +4,7 @@ venv/
 iris_demo.csv
 *.html
 *.pkl
-logs/ 
+logs/
+.env
 # UI reference only (not part of project)
 awesome-landing-pages/
