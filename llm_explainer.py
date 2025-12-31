@@ -10,9 +10,27 @@ import logging
 import json
 import streamlit as st
 from typing import Dict, Optional, Any, List, Tuple
-
-import os
 from dotenv import load_dotenv
+
+# Set up logging first
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# Create logs directory if it doesn't exist
+log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
+os.makedirs(log_dir, exist_ok=True)
+
+# Create file handler which logs even debug messages
+log_file = os.path.join(log_dir, 'llm_explainer.log')
+file_handler = logging.FileHandler(log_file)
+file_handler.setLevel(logging.INFO)
+
+# Create formatter and add it to the handlers
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+
+# Add the handlers to the logger
+logger.addHandler(file_handler)
 
 # Load environment variables from .env file
 load_dotenv()
@@ -34,20 +52,9 @@ try:
         model = genai.GenerativeModel("models/gemini-flash-lite-latest")
         GEMINI_AVAILABLE = True
         
-except ImportError:
-    logger.warning("google.generativeai module not found. Some features will be disabled.")
-
-# Set up logging
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-# Create logs directory if it doesn't exist
-log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
-os.makedirs(log_dir, exist_ok=True)
-
-# Create file handler which logs even debug messages
-log_file = os.path.join(log_dir, 'llm_explainer.log')
-file_handler = logging.FileHandler(log_file)
+except ImportError as e:
+    logger.warning(f"Google Generative AI module not found: {e}")
+    logger.warning("Some features will be disabled.")
 file_handler.setLevel(logging.INFO)
 
 # Create console handler with a higher log level
