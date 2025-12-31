@@ -1,10 +1,15 @@
-__pycache__/
-venv/
-*.pyc
-iris_demo.csv
-*.html
-*.pkl
-logs/
+# .gitignore
 .env
-# UI reference only (not part of project)
-awesome-landing-pages/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+*.log
+# In .gitignore
+.streamlit/secrets.toml
+.env
