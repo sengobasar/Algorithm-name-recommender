@@ -11,7 +11,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 ![AI Powered](https://img.shields.io/badge/AI-Powered-purple?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Production_Ready-success?style=for-the-badge)
 
 </div>
 
