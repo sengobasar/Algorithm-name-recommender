@@ -36,7 +36,8 @@ GEMINI_AVAILABLE = False
 model = None
 
 try:
-    import google.genai as genai
+    import google.generativeai as genai
+    import google.ai.generativelanguage as glm
     
     # Get API key from Streamlit secrets
     GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY")
@@ -45,16 +46,14 @@ try:
         logger.warning("GEMINI_API_KEY not found in Streamlit secrets")
         GEMINI_AVAILABLE = False
     else:
-        # Configure the new Gemini client
-        client = genai.Client(api_key=GEMINI_API_KEY)
+        # Configure the client
+        genai.configure(api_key=GEMINI_API_KEY)
         
-        # Check if the model is available
+        # Test the connection with a simple model check
         try:
-            # Try to get model info to verify the key works
-            model_info = client.get_model("models/gemini-1.5-flash")
-            model = model_info.name  # Store the full model name
+            model = genai.GenerativeModel('gemini-pro')
             GEMINI_AVAILABLE = True
-            logger.info(f"Gemini configured successfully with model: {model}")
+            logger.info("Gemini configured successfully with model: gemini-pro")
         except Exception as e:
             logger.error(f"Failed to initialize Gemini model: {str(e)}")
             GEMINI_AVAILABLE = False
