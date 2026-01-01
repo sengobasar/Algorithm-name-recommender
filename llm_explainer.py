@@ -31,6 +31,13 @@ file_handler.setFormatter(formatter)
 # Add the handlers to the logger
 logger.addHandler(file_handler)
 
+import logging
+import streamlit as st
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # Initialize Gemini
 GEMINI_AVAILABLE = False
 model = None
@@ -51,34 +58,17 @@ try:
             # Configure the client
             genai.configure(api_key=GEMINI_API_KEY)
             
-            # Try direct model initialization first
+            # Use the confirmed working model
+            model = genai.GenerativeModel("models/gemini-2.5-flash")
+            
+            # Test the model with a simple prompt to verify it works
             try:
-                model = genai.GenerativeModel('gemini-1.5-pro-latest')
+                response = model.generate_content("Test connection")
                 GEMINI_AVAILABLE = True
-                logger.info("✅ Successfully initialized Gemini with model: gemini-1.5-pro-latest")
-                
-            except Exception as model_error:
-                logger.warning(f"⚠️ Primary model failed. Trying alternative models... Error: {str(model_error)}")
-                
-                # Try alternative models
-                alternative_models = [
-                    'gemini-1.5-flash-latest',
-                    'gemini-1.0-pro-latest',
-                    'gemini-pro',
-                    'models/gemini-pro'
-                ]
-                
-                for model_name in alternative_models:
-                    try:
-                        model = genai.GenerativeModel(model_name)
-                        GEMINI_AVAILABLE = True
-                        logger.info(f"✅ Successfully initialized Gemini with model: {model_name}")
-                        break
-                    except Exception as e:
-                        logger.warning(f"⚠️ Failed to initialize with {model_name}: {str(e)}")
-                
-                if not GEMINI_AVAILABLE:
-                    logger.error("❌ Failed to initialize any Gemini model")
+                logger.info("✅ Successfully initialized and tested Gemini with model: models/gemini-2.5-flash")
+            except Exception as test_error:
+                logger.error(f"❌ Model initialization test failed: {str(test_error)}")
+                GEMINI_AVAILABLE = False
                     
         except Exception as e:
             logger.error(f"❌ Critical error initializing Gemini: {str(e)}")
