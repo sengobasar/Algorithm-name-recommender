@@ -5,14 +5,13 @@ This module provides functionality to generate explanations for ML pipeline resu
 It acts as a post-hoc explanation layer that operates on the structured results.
 """
 
-import os
 import logging
 import json
 import streamlit as st
 from typing import Dict, Optional, Any, List, Tuple
-from dotenv import load_dotenv
+import os
 
-# Set up logging first
+# Set up logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -32,30 +31,56 @@ file_handler.setFormatter(formatter)
 # Add the handlers to the logger
 logger.addHandler(file_handler)
 
-# Load environment variables from .env file
-load_dotenv()
+import logging
+import streamlit as st
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Initialize Gemini
 GEMINI_AVAILABLE = False
 model = None
 
 try:
     import google.generativeai as genai
     
-    # Get API key from environment variables
-    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+    # Get API key from Streamlit secrets
+    GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY")
     
     if not GEMINI_API_KEY:
-        logger.warning("GEMINI_API_KEY not found in environment variables")
+        logger.warning("❌ GEMINI_API_KEY not found in Streamlit secrets")
+        GEMINI_AVAILABLE = False
     else:
-        # Configure Gemini
-        genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel("models/gemini-flash-lite-latest")
-        GEMINI_AVAILABLE = True
-        
+        try:
+            logger.info("🔑 Found Gemini API key. Initializing...")
+            
+            # Configure the client
+            genai.configure(api_key=GEMINI_API_KEY)
+            
+            # Use the confirmed working model
+            model = genai.GenerativeModel("models/gemini-2.5-flash")
+            
+            # Test the model with a simple prompt to verify it works
+            try:
+                response = model.generate_content("Test connection")
+                GEMINI_AVAILABLE = True
+                logger.info("✅ Successfully initialized and tested Gemini with model: models/gemini-2.5-flash")
+            except Exception as test_error:
+                logger.error(f"❌ Model initialization test failed: {str(test_error)}")
+                GEMINI_AVAILABLE = False
+                    
+        except Exception as e:
+            logger.error(f"❌ Critical error initializing Gemini: {str(e)}")
+            GEMINI_AVAILABLE = False
+
+except Exception as e:
+    logger.error(f"Gemini setup failed: {e}")
+    GEMINI_AVAILABLE = False
+
 except ImportError as e:
     logger.warning(f"Google Generative AI module not found: {e}")
     logger.warning("Some features will be disabled.")
-file_handler.setLevel(logging.INFO)
 
 # Create console handler with a higher log level
 console_handler = logging.StreamHandler()
