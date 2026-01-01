@@ -159,18 +159,18 @@ def is_available() -> bool:
 def render_ai_explanation_panel(structured_results: Dict[str, Any]):
     """
     Render the AI explanation panel in the Streamlit UI.
-    
+
     This function should only be called once per render cycle.
-    
+
     Args:
         structured_results: Dictionary containing the structured ML pipeline results
     """
     if not is_available():
         st.warning("Gemini API is not available. Some features may be limited.")
         return
-    
-    # Create a container for the AI panel
-    with st.container():
+
+    # Create a container with fixed height matching the model comparison table
+    with st.container(height=1300):
         # Panel header with close button
         col1, col2 = st.columns([4, 1])
         with col1:
@@ -179,17 +179,17 @@ def render_ai_explanation_panel(structured_results: Dict[str, Any]):
             if st.button("✕ Close", key="close_ai_panel_main"):
                 st.session_state.ai_active = False
                 st.rerun()
-        
+
         # Initialize chat history if it doesn't exist
         if "chat_history" not in st.session_state:
             st.session_state.chat_history = []
-        
+
         # Initial explanation if chat is empty
         if not st.session_state.chat_history:
             with st.spinner("Generating analysis..."):
                 initial_explanation = generate_explanation(structured_results)
                 st.session_state.chat_history.append(("assistant", initial_explanation))
-        
+
         # Display chat history
         for role, message in st.session_state.chat_history:
             if role == "assistant":
@@ -198,24 +198,22 @@ def render_ai_explanation_panel(structured_results: Dict[str, Any]):
             else:
                 with st.chat_message("user"):
                     st.markdown(message)
-        
+
         # Chat input with unique key
         user_question = st.chat_input("Ask about the analysis...", key="ai_chat_input")
-        
+
         if user_question:
             # Add user question to chat
             st.session_state.chat_history.append(("user", user_question))
-            
-            # Generate and display response
-            with st.chat_message("assistant"):
-                with st.spinner("Thinking..."):
-                    response = generate_explanation(structured_results, user_question)
-                    st.markdown(response)
-                    st.session_state.chat_history.append(("assistant", response))
-            
+
+            # Generate response and add to chat history
+            with st.spinner("Thinking..."):
+                response = generate_explanation(structured_results, user_question)
+                st.session_state.chat_history.append(("assistant", response))
+
             # Rerun to update the chat display
             st.rerun()
-        
+
         # Add a button to regenerate the initial explanation
         if st.button("🔄 Regenerate Explanation", key="regenerate_explanation_btn"):
             st.session_state.chat_history = []
