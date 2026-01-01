@@ -37,7 +37,6 @@ model = None
 
 try:
     import google.generativeai as genai
-    import google.ai.generativelanguage as glm
     
     # Get API key from Streamlit secrets
     GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY")
@@ -46,14 +45,41 @@ try:
         logger.warning("GEMINI_API_KEY not found in Streamlit secrets")
         GEMINI_AVAILABLE = False
     else:
-        # Configure the client
-        genai.configure(api_key=GEMINI_API_KEY)
-        
-        # Test the connection with a simple model check
         try:
-            model = genai.GenerativeModel('gemini-pro')
-            GEMINI_AVAILABLE = True
-            logger.info("Gemini configured successfully with model: gemini-pro")
+            # Configure the client with the latest API version
+            genai.configure(api_key=GEMINI_API_KEY)
+            
+            # List available models to find a compatible one
+            models = genai.list_models()
+            
+            # Try to find a suitable model
+            model_name = None
+            preferred_models = [
+                'gemini-1.5-flash-001',
+                'gemini-1.5-pro-001',
+                'gemini-pro'
+            ]
+            
+            for m in preferred_models:
+                if any(m in model.name for model in models):
+                    model_name = m
+                    break
+                    
+            if model_name is None and models:
+                # Fallback to the first available model
+                model_name = models[0].name
+                
+            if model_name:
+                model = genai.GenerativeModel(model_name)
+                GEMINI_AVAILABLE = True
+                logger.info(f"Gemini configured successfully with model: {model_name}")
+            else:
+                logger.error("No suitable Gemini models found")
+                GEMINI_AVAILABLE = False
+                
+        except Exception as e:
+            logger.error(f"Failed to initialize Gemini: {str(e)}")
+            GEMINI_AVAILABLE = False
         except Exception as e:
             logger.error(f"Failed to initialize Gemini model: {str(e)}")
             GEMINI_AVAILABLE = False
