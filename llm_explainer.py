@@ -44,9 +44,15 @@ try:
     if not GEMINI_API_KEY:
         logger.warning("GEMINI_API_KEY not found in Streamlit secrets")
     else:
-        # Configure Gemini
-        genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel("gemini-pro")
+        # Configure Gemini with explicit API version
+        genai.configure(
+            api_key=GEMINI_API_KEY,
+            client_options={
+                'api_endpoint': 'generativelanguage.googleapis.com',
+                'api_version': 'v1beta'
+            }
+        )
+        model = genai.GenerativeModel('gemini-pro')
         GEMINI_AVAILABLE = True
         logger.info("Gemini configured successfully with model: gemini-pro")
 
