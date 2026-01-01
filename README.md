@@ -2,7 +2,7 @@
 
 # 🤖 AI-Powered ML Algorithm Recommender
 
-### *Smart, Transparent, One-Click Machine Learning Pipeline*
+### *Smart, Transparent, Context-Aware Machine Learning Pipeline*
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg?style=for-the-badge&logo=python)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)](https://streamlit.io/)
@@ -17,61 +17,179 @@
 
 ---
 
-## 🧠 **Why This Project Exists**
+## 💡 **The Problem We're Solving**
 
-There are many machine learning algorithms for classification and regression, but **choosing the right one for a given dataset is difficult** and often requires expertise and repeated experimentation.
+### 🎓 **For Students & Researchers:**
+> *"I have a dataset for my project, but I don't know which ML algorithm to use. Should I use Random Forest or SVM? Why is my model only 60% accurate? What preprocessing should I do?"*
 
-In real-world scenarios, datasets are rarely clean—they contain **missing values, mixed feature types, inconsistent formats, and noise**. This makes manual model selection slow, error-prone, and frustrating, especially for beginners and early-stage analysis.
+### 👨‍💻 **For Data Scientists:**
+> *"I'm tired of manually testing 10+ algorithms on every new dataset. I need quick baseline comparisons, but existing AutoML tools don't explain WHY they chose a particular model."*
 
-While **AutoML tools exist**, most assume clean data and operate as **black boxes**, providing little insight into why a model was chosen or how the data was processed.
-
-### **This project addresses that gap.**
-
-Unlike black-box AutoML systems, our **AI-powered recommender makes transparent, adaptive decisions at every step**—from data repair and preprocessing to model selection and evaluation—providing clear comparisons, interpretable metrics, and explainable outcomes.
-
-**The result:** A system that is **practical for real-world messy data, educational for learners, and trustworthy for experimentation.**
+### 🏢 **For Industry Practitioners:**
+> *"Our datasets are messy—missing values, mixed types, inconsistent formats. Most AutoML tools fail or give poor results. I need something that handles real-world data AND explains its decisions."*
 
 ---
 
-## 🎯 **What Makes This AI-Powered?**
+## 🎯 **The Core Problem**
+
+**Algorithm selection is hard.** It typically requires:
+- ❌ **Repeated manual experimentation** (hours/days of trial and error)
+- ❌ **Domain expertise** (not accessible to beginners)
+- ❌ **Clean data assumptions** (real-world data is messy)
+- ❌ **Black-box AutoML** (no insight into WHY decisions were made)
+
+### 📊 **Real-World Pain Points:**
+
+| Challenge | Impact | Affected Users |
+|-----------|--------|----------------|
+| **Messy Data** | 80% of time spent on data cleaning | Everyone |
+| **Algorithm Confusion** | 20+ algorithms, which one to pick? | Students, Beginners |
+| **Black-Box Tools** | Can't explain model choice to stakeholders | Researchers, Industry |
+| **Manual Experimentation** | Days wasted on trial-and-error | Data Scientists |
+| **Learning Barrier** | Hard to understand what works and why | Students, Self-learners |
+
+> 📈 **Research shows:** Data scientists spend **60-80% of their time** on data preparation and model selection, not actual analysis.
+
+---
+
+## 🚀 **Our Solution**
+
+We built an **intelligent, transparent, context-aware ML recommender** that:
+
+### ✨ **Core Innovation:**
+
+```mermaid
+graph TD
+    A[Upload Messy Data] --> B[AI Analysis Engine]
+    B --> C{Context-Aware Decision Making}
+    C --> D[Adaptive Preprocessing]
+    C --> E[Smart Algorithm Selection]
+    C --> F[Synthetic Data Generation]
+    D --> G[Multi-Model Training]
+    E --> G
+    F --> G
+    G --> H[Transparent Evaluation]
+    H --> I[Natural Language Explanations]
+    I --> J[Best Algorithm + Why]
+    
+    style C fill:#667eea
+    style I fill:#f093fb
+    style J fill:#38bdf8
+```
+
+### 🎯 **What Makes Us Different:**
 
 <table>
 <tr>
-<td width="25%" align="center">
-<img src="https://img.icons8.com/fluency/96/artificial-intelligence.png" width="64"/>
-<br><b>Smart Detection</b>
-<br>AI analyzes target distribution & auto-detects problem type
+<td width="50%">
+
+#### 🔓 **Transparent, Not Black-Box**
+- ✅ See **why** each preprocessing step was chosen
+- ✅ Understand **how** algorithms were selected
+- ✅ Get **natural language explanations** via Gemini AI
+- ✅ Perfect for **learning and debugging**
+
 </td>
-<td width="25%" align="center">
-<img src="https://img.icons8.com/fluency/96/module.png" width="64"/>
-<br><b>Adaptive Pipeline</b>
-<br>Preprocessing based on skewness, collinearity, not fixed rules
+<td width="50%">
+
+#### 🧠 **Context-Aware Intelligence**
+- ✅ Adapts to **dataset characteristics**
+- ✅ Considers **user experience level**
+- ✅ Respects **computational constraints**
+- ✅ Balances **transparency vs performance**
+
 </td>
-<td width="25%" align="center">
-<img src="https://img.icons8.com/fluency/96/engineering.png" width="64"/>
-<br><b>Dynamic Selection</b>
-<br>AI picks 7 best from 21 algorithms based on dataset traits
+</tr>
+<tr>
+<td width="50%">
+
+#### 🧹 **Handles Real-World Mess**
+- ✅ **Corrupted files** → Auto-repairs
+- ✅ **Missing values** → Smart imputation
+- ✅ **Mixed types** → Type-aware processing
+- ✅ **Imbalanced classes** → Adaptive strategies
+
 </td>
-<td width="25%" align="center">
-<img src="https://img.icons8.com/fluency/96/google-logo.png" width="64"/>
-<br><b>Gemini AI Explanations</b>
-<br>Natural language reasoning for every decision made
+<td width="50%">
+
+#### ⚡ **Fast & Educational**
+- ✅ Results in **< 60 seconds**
+- ✅ **21 algorithms** dynamically selected
+- ✅ **5-fold cross-validation**
+- ✅ Learn **while you work**
+
 </td>
 </tr>
 </table>
 
-### 🌟 **Gemini AI Integration**
+---
 
-Our system leverages **Google's Gemini AI** to provide human-readable explanations:
+## 🎨 **Current Extensions (Already Implemented)**
 
-- 📊 **Structured Analysis**: AI receives detailed dataset characteristics (skewness, missing patterns, feature types) in structured format
-- 🧠 **Intelligent Reasoning**: Gemini explains WHY specific preprocessing steps were chosen based on your data's nature
-- 🎯 **Model Justification**: Get clear explanations for why certain algorithms perform better on your dataset
-- 📝 **Natural Language Reports**: Converts technical metrics into easy-to-understand insights
-- 🔍 **Dataset Profiling**: AI analyzes your data distribution, quality issues, and suggests improvements
+### 🚀 **Advanced Context-Aware Selection** *(Prototype Ready)*
 
-**Example Output:**
-> *"Your dataset shows high skewness in 3 numerical features and 40% missing values in categorical columns. I applied log transformation for skewed features and mode imputation for categoricals. Random Forest was selected as the best algorithm because it handles non-linear relationships well and is robust to your data's moderate class imbalance (60:40 ratio)."*
+Our system goes beyond basic AutoML by collecting comprehensive context:
+
+#### 📊 **1. Dataset Characteristics Analysis**
+```python
+{
+  "size": (rows, columns),
+  "feature_types": {"numerical": n, "categorical": m},
+  "missing_values": {"column": percentage},
+  "noise_level": "low/medium/high",
+  "skewness": {feature: value},
+  "outliers_detected": boolean
+}
+```
+
+#### 🎯 **2. Problem Characteristics Detection**
+```python
+{
+  "task_type": "binary/multiclass/regression",
+  "class_balance": "balanced/imbalanced (ratio)",
+  "linearity": "linear/non-linear",
+  "feature_interactions": "present/absent",
+  "complexity": "simple/moderate/complex"
+}
+```
+
+#### 👤 **3. User Context & Preferences**
+```python
+{
+  "experience_level": "beginner/intermediate/advanced",
+  "priority": "transparency/performance/balance",
+  "compute_constraints": "low/medium/high",
+  "time_budget": "quick/standard/thorough",
+  "explainability_need": "high/medium/low"
+}
+```
+
+#### 🔧 **4. Analysis Preferences**
+- **Transparency Mode**: Prioritizes interpretable models (Logistic Regression, Decision Trees)
+- **Performance Mode**: Focuses on accuracy (Random Forest, Gradient Boosting)
+- **Balanced Mode**: Optimal trade-off between explainability and performance
+
+### 🌟 **Based on This Structured Input, The System:**
+
+| Feature | Description | Benefit |
+|---------|-------------|---------|
+| 🔧 **Adaptive Preprocessing** | Selects imputation, scaling, encoding based on data nature | Optimal data preparation |
+| 🤖 **Smart Algorithm Choice** | Picks 7 best from 21 based on context | No wasted computation |
+| 🎲 **Synthetic Data Generation** | Creates realistic data when real data unavailable | Testing & prototyping |
+| 💬 **AI Explanations** | Gemini generates natural language reasoning | Learn why it works |
+| 📊 **Performance Tracking** | Logs all decisions and metrics | Full transparency |
+
+### 🔗 **Extended Version:**
+For the advanced context-aware algorithm selection system, check out:
+
+[![Extended Version](https://img.shields.io/badge/View_Extended_Version-667eea?style=for-the-badge&logo=github)](https://github.com/sengobasar/variation_algorithm-recommender)
+
+**New Features Include:**
+- 🎯 User experience level detection
+- ⚙️ Computational constraint handling  
+- 🎲 Synthetic data generation for testing
+- 📈 Performance vs transparency trade-offs
+- 🔍 Advanced feature engineering
 
 ---
 
@@ -79,9 +197,21 @@ Our system leverages **Google's Gemini AI** to provide human-readable explanatio
 
 <div align="center">
 
-| 🤖 Algorithms | 🔄 Cross-Validation | ⚡ Time to Results | 🎯 Accuracy |
+| 🤖 Algorithms | 🔄 Cross-Validation | ⚡ Time to Results | 🎯 Context Factors |
 |:---:|:---:|:---:|:---:|
-| **21** ML Models | **5-Fold** CV | **< 60 sec** | Ranked & Visualized |
+| **21** ML Models | **5-Fold** CV | **< 60 sec** | **10+** Parameters |
+
+</div>
+
+---
+
+## 🌐 **Live Demo**
+
+<div align="center">
+
+[![Try Live Demo](https://img.shields.io/badge/🚀_Try_Live_Demo-Streamlit_App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://algorithm-name-recommender-ww93smhxozdojs8ydpwrok.streamlit.app/)
+
+**Experience the system in action!** Upload your dataset and get AI-powered recommendations instantly.
 
 </div>
 
@@ -89,9 +219,32 @@ Our system leverages **Google's Gemini AI** to provide human-readable explanatio
 
 ## ⚡ **Quick Start**
 
-### 🔑 **Step 1: Configure Gemini AI (Required)**
+### 🚀 **Step 1: Install & Run**
+
+```bash
+# 1️⃣ Clone the repository
+git clone https://github.com/sengobasar/Algorithm-name-recommender.git
+cd Algorithm-name-recommender
+
+# 2️⃣ Create virtual environment
+python -m venv venv
+source venv/bin/activate          # Mac/Linux
+# venv\Scripts\activate           # Windows
+
+# 3️⃣ Install dependencies
+pip install -r requirements.txt
+```
+
+---
+
+### 🔑 **Step 2: Configure Gemini AI (Required)**
 
 This project uses **Gemini AI** for explainable analysis and reasoning.
+
+#### **🔗 Get Your API Key:**
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create a new API key (free tier available)
+3. Copy and configure it using one of the options below
 
 #### **Option A: Environment Variable (Recommended)**
 
@@ -119,27 +272,11 @@ Create a `.env` file in the project root:
 GEMINI_API_KEY=YOUR_GEMINI_API_KEY
 ```
 
-#### **🔗 Get Your API Key:**
-1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Create a new API key (free tier available)
-3. Copy and set it as shown above
-
 ---
 
-### 🚀 **Step 2: Install & Run**
+### ▶️ **Step 3: Launch the App**
 
 ```bash
-# 1️⃣ Clone the repository
-git clone https://github.com/sengobasar/Algorithm-name-recommender.git
-cd Algorithm-name-recommender
-
-# 2️⃣ Create virtual environment
-python -m venv venv
-source venv/bin/activate          # Mac/Linux
-# venv\Scripts\activate           # Windows
-
-# 3️⃣ Install dependencies & Run
-pip install -r requirements.txt
 streamlit run app.py
 ```
 
@@ -187,14 +324,14 @@ streamlit run app.py
 
 ```mermaid
 graph LR
-    A[📁 Upload Dataset] --> B[🔍 AI Analysis]
+    A[📁 Upload Dataset] --> B[🔍 Context Analysis]
     B --> C[🧹 Smart Cleaning]
     C --> D[🧠 Adaptive Preprocessing]
-    D --> E[🤖 Train 7 Models]
-    E --> F[📊 5-Fold CV]
-    F --> G[🏆 Rank & Recommend]
-    G --> H[💬 Gemini Explains]
-    H --> I[📈 Visual Results]
+    D --> E[🤖 Select 7 Best Models]
+    E --> F[📊 5-Fold CV Training]
+    F --> G[🏆 Rank Algorithms]
+    G --> H[💬 Gemini Explains Why]
+    H --> I[📈 Visual Results + Export]
     
     style A fill:#e3f2fd
     style B fill:#fff3e0
@@ -210,10 +347,10 @@ graph LR
 | Step | Process | AI Magic ✨ |
 |:---:|---------|-------------|
 | **1** | 📁 **Upload** | Handles CSV/Excel with any encoding/delimiter |
-| **2** | 🔍 **Analyze** | AI detects types, skewness, collinearity, missing patterns |
+| **2** | 🔍 **Analyze Context** | Detects types, skewness, collinearity, user preferences |
 | **3** | 🧹 **Clean** | Auto-repairs corrupted data, validates structure |
 | **4** | 🧠 **Preprocess** | Adaptive pipeline: imputation → scaling → encoding |
-| **5** | 🤖 **Train** | 7 algorithms selected from 21 based on dataset characteristics |
+| **5** | 🤖 **Select Models** | 7 algorithms chosen from 21 based on dataset + context |
 | **6** | 📊 **Validate** | 5-fold cross-validation for robust metrics |
 | **7** | 🏆 **Recommend** | Best algorithm ranked with performance scores |
 | **8** | 💬 **Explain** | **Gemini AI generates natural language reasoning** |
@@ -233,39 +370,45 @@ graph LR
      "skewness": {"feature_1": 2.3, "feature_2": -0.5},
      "feature_types": {"numerical": 4, "categorical": 1},
      "class_distribution": {"class_0": 60%, "class_1": 40%},
-     "correlation": "high collinearity detected"
+     "correlation": "high collinearity detected",
+     "user_context": {"experience": "beginner", "priority": "transparency"}
    }
    ```
 
 2. **AI Reasoning Generation:**
-   - Gemini receives structured metrics
-   - Analyzes dataset nature and characteristics
+   - Gemini receives structured metrics + context
+   - Analyzes dataset nature and user needs
    - Generates human-readable explanations
    - Justifies preprocessing and model choices
 
 3. **Transparent Output:**
-   - **Why this preprocessing?** - Based on your data's skewness and missing patterns
-   - **Why this algorithm?** - Explains performance in context of dataset traits
-   - **What can improve?** - Actionable suggestions for better results
+   - **Why this preprocessing?** - Based on your data's characteristics
+   - **Why this algorithm?** - Explains performance in your context
+   - **What can improve?** - Actionable suggestions tailored to you
 
 ### **Example Explanation:**
 
 > **Dataset Analysis:**
-> Your dataset has 150 samples with 5 features. I detected 15% missing values in 'age' column and high skewness (2.3) in 'income'. The target variable shows moderate class imbalance (60:40).
+> Your dataset has 150 samples with 5 features. I detected 15% missing values in 'age' column and high skewness (2.3) in 'income'. The target variable shows moderate class imbalance (60:40). Since you're a beginner prioritizing transparency, I've optimized for interpretability.
 >
 > **Preprocessing Decisions:**
-> - Applied median imputation for 'age' (skewed distribution, robust to outliers)
+> - Applied median imputation for 'age' (robust to skewed distributions)
 > - Log transformation on 'income' (reduces skewness from 2.3 to 0.4)
-> - StandardScaler chosen over MinMaxScaler (data contains outliers)
+> - StandardScaler chosen (data contains outliers, normalizes features)
+> - No complex feature engineering (keeping it simple for learning)
 >
 > **Model Selection:**
 > Random Forest achieved 94.5% accuracy because:
-> - Handles non-linear relationships well
-> - Robust to class imbalance without resampling
-> - Not sensitive to feature scaling (good for mixed data types)
+> - Handles non-linear relationships (detected in your data)
+> - Robust to class imbalance without manual resampling
+> - Provides feature importance (helps you understand what matters)
+> - Balance between performance and interpretability
+>
+> **For Your Learning:**
+> Try Decision Tree next to see individual decision paths. It's more transparent than Random Forest and great for understanding how predictions are made.
 >
 > **Suggestions:**
-> Consider collecting more samples for the minority class or try SMOTE if performance needs improvement.
+> Consider collecting 20-30 more samples for the minority class or try SMOTE if you need even better performance.
 
 ---
 
@@ -294,7 +437,12 @@ graph LR
 
 </details>
 
-> 💡 **AI dynamically selects** the best 7 algorithms based on dataset size, class balance, feature count, and problem complexity.
+> 💡 **AI dynamically selects** the best 7 algorithms based on:
+> - Dataset size & complexity
+> - Class balance & feature types
+> - User experience level
+> - Computational constraints
+> - Transparency vs performance priority
 
 ---
 
@@ -307,34 +455,34 @@ graph LR
 ### 🔓 **Not a Black Box**
 Unlike AutoML tools, you see:
 - ✅ Why each preprocessing step was chosen
-- ✅ How algorithms were selected
+- ✅ How algorithms were selected based on YOUR context
 - ✅ Detailed performance comparisons
 - ✅ Natural language explanations via Gemini AI
 
-**Perfect for:** Education, debugging, understanding ML workflows
+**Perfect for:** Education, debugging, stakeholder presentations
 
 </td>
 <td width="50%">
 
 ### 🧹 **Built for Messy Data**
 Real-world datasets are imperfect:
-- ✅ Handles corrupted files
+- ✅ Handles corrupted files automatically
 - ✅ Mixed encodings & delimiters
 - ✅ Missing values & noise
 - ✅ Inconsistent formats
 
-**No preprocessing needed** - just upload!
+**No preprocessing needed** - just upload and go!
 
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-### ⚡ **Fast & Local**
+### ⚡ **Fast & Context-Aware**
 - ✅ Results in < 60 seconds
-- ✅ Runs on your machine
-- ✅ Privacy-friendly
-- ✅ No data uploaded to cloud (except AI explanations)
+- ✅ Adapts to your experience level
+- ✅ Respects computational limits
+- ✅ Privacy-friendly (runs locally)
 
 **Your raw data stays local!**
 
@@ -343,12 +491,12 @@ Real-world datasets are imperfect:
 
 ### 📚 **Educational & Trustworthy**
 Learn while you work:
-- ✅ See all metrics & comparisons
-- ✅ Understand preprocessing choices via AI
+- ✅ See all metrics & trade-offs
+- ✅ Understand preprocessing via AI explanations
 - ✅ Compare algorithm performance
-- ✅ Get improvement suggestions
+- ✅ Get personalized improvement suggestions
 
-**Great for students & researchers!**
+**Perfect for students & researchers!**
 
 </td>
 </tr>
@@ -401,14 +549,20 @@ pip install tpot
 
 4. **Select target column** from dropdown
 
-5. **Click "🚀 Run Analysis"**
+5. **(Optional) Set preferences:**
+   - Experience level: Beginner/Intermediate/Advanced
+   - Priority: Transparency/Performance/Balanced
+   - Compute constraints: Low/Medium/High
 
-6. **Get AI-powered results:**
+6. **Click "🚀 Run Analysis"**
+
+7. **Get context-aware AI results:**
    - 🏆 Best algorithm recommendation with reasoning
-   - 💬 Natural language explanation from Gemini
+   - 💬 Personalized explanation from Gemini AI
    - 📊 Performance metrics for all models
    - 📈 Interactive visualizations
    - 💾 Downloadable comparison CSV
+   - 🎯 Tailored improvement suggestions
 
 ---
 
@@ -419,6 +573,7 @@ Algorithm-name-recommender/
 │
 ├── app.py                    # 🎨 Streamlit UI Application
 ├── ml_recommender.py         # 🧠 Core ML Pipeline Engine
+├── context_analyzer.py       # 🎯 Context-Aware Selection Logic
 ├── gemini_explainer.py       # 💬 Gemini AI Integration
 ├── ui_utils.py               # 🖥️ Console UI Utilities
 ├── requirements.txt          # 📦 Dependencies
@@ -438,6 +593,7 @@ This project is based on academic research focusing on:
 - **Educational ML workflows** for learning and debugging
 - **Robust data handling** for real-world imperfect datasets
 - **Explainable AI** through natural language generation
+- **Context-aware intelligence** for personalized recommendations
 
 > 📄 *Full research paper available in repository*
 
@@ -445,13 +601,13 @@ This project is based on academic research focusing on:
 
 ## 🎓 **Use Cases**
 
-| Use Case | Description |
-|----------|-------------|
-| 🎓 **Education** | Learn ML workflows with AI-generated explanations |
-| 🔬 **Research** | Quick baseline comparisons with reasoning |
-| 💼 **Business** | Fast prototyping with interpretable results |
-| 🧪 **Data Science** | Explore algorithm performance with insights |
-| 👨‍💻 **Development** | Understand why models work on your data |
+| Use Case | Description | Benefit |
+|----------|-------------|---------|
+| 🎓 **Students** | Learn ML workflows with AI-generated explanations | Understand WHY, not just WHAT |
+| 🔬 **Researchers** | Quick baseline comparisons with transparent reasoning | Save hours of manual testing |
+| 💼 **Data Scientists** | Handle messy real-world data automatically | Focus on insights, not cleaning |
+| 👨‍💻 **Developers** | Integrate ML into apps without expertise | Production-ready recommendations |
+| 🏫 **Educators** | Teach ML concepts with interactive examples | Students see decisions in action |
 
 ---
 
@@ -464,7 +620,65 @@ This project is based on academic research focusing on:
 - [ ] 🏗️ Deep learning integration
 - [ ] 🌐 REST API endpoint
 - [ ] 📊 Benchmark vs AutoGluon/Auto-sklearn
-- [ ] 🤖 Multi-modal AI explanations (charts + text)
+- [ ] 🤖 Multi-modal AI explanations (charts + text + audio)
+- [ ] 🎯 A/B testing framework for model comparison
+- [ ] 📱 Mobile app version
+
+---
+
+## 🔄 **Advanced Context-Aware Variation**
+
+We've developed an **enhanced version** with advanced context-aware features:
+
+### 🎯 **Context-Aware Algorithm Recommender**
+
+This variation extends the base system with intelligent context analysis:
+
+#### **📊 What It Collects:**
+
+1. **Dataset Characteristics:**
+   - Size (rows, columns)
+   - Feature types (numerical, categorical)
+   - Missing value patterns
+   - Noise levels and outlier detection
+
+2. **Problem Characteristics:**
+   - Task type (binary/multiclass/regression)
+   - Class balance ratios
+   - Data linearity detection
+   - Feature interaction complexity
+
+3. **Analysis Preferences:**
+   - Transparency vs Performance trade-off
+   - Computational resource constraints
+   - Time budget for analysis
+   - Explainability requirements
+
+4. **User Context & Experience:**
+   - Experience level (beginner/intermediate/advanced)
+   - Domain expertise
+   - Specific constraints or requirements
+   - Learning vs production goals
+
+#### **🤖 What The System Does:**
+
+Based on this comprehensive structured input, the enhanced system:
+
+- ✅ **Selects optimal preprocessing strategies** tailored to your data's unique characteristics
+- ✅ **Chooses suitable algorithms** that match both data properties and user needs
+- ✅ **Generates synthetic data** when real data is unavailable for testing and prototyping
+- ✅ **Provides personalized explanations** adapted to user experience level
+- ✅ **Balances trade-offs** between interpretability, performance, and computational cost
+
+### 🔗 **Try the Advanced Version:**
+
+<div align="center">
+
+[![Context-Aware Version](https://img.shields.io/badge/🎯_Advanced_Context--Aware_Version-View_Repository-667eea?style=for-the-badge&logo=github)](https://github.com/sengobasar/variation_algorithm-recommender)
+
+**Perfect for:** Users who need fine-grained control over the ML pipeline and want personalized recommendations based on their specific context.
+
+</div>
 
 ---
 
@@ -489,8 +703,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 **Author**
 
 **Sengo Basar**
+- 🎓 BCA Student (2023-2026) - ADTU
 - GitHub: [@sengobasar](https://github.com/sengobasar)
-- Project: [Algorithm-name-recommender](https://github.com/sengobasar/Algorithm-name-recommender)
+- Portfolio: [sengo-portfolio.netlify.app](https://sengo-portfolio.netlify.app/)
+
+### **Project Links:**
+- 🚀 **Main Repository:** [Algorithm-name-recommender](https://github.com/sengobasar/Algorithm-name-recommender)
+- 🎯 **Context-Aware Variation:** [variation_algorithm-recommender](https://github.com/sengobasar/variation_algorithm-recommender)
+- 🌐 **Live Demo:** [Try it now!](https://algorithm-name-recommender-ww93smhxozdojs8ydpwrok.streamlit.app/)
 
 ---
 
@@ -502,6 +722,8 @@ Built with:
 - 🎨 Streamlit for beautiful UI
 - 📊 Plotly for interactive visualizations
 - 🧮 Pandas & NumPy for data processing
+
+Special thanks to the open-source community and my professors at ADTU for guidance and support.
 
 ---
 
