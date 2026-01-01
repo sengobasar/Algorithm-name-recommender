@@ -46,9 +46,9 @@ try:
     else:
         # Configure Gemini
         genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel("models/gemini-1.5-flash")
+        model = genai.GenerativeModel("gemini-pro")
         GEMINI_AVAILABLE = True
-        logger.info("Gemini configured successfully with model: models/gemini-1.5-flash")
+        logger.info("Gemini configured successfully with model: gemini-pro")
 
 except Exception as e:
     logger.error(f"Gemini setup failed: {e}")
