@@ -129,25 +129,30 @@ graph TD
 
 <table>
 <tr>
-<td width="25%" align="center">
+<td width="20%" align="center">
 <img src="https://img.icons8.com/fluency/96/artificial-intelligence.png" width="64"/>
 <br><b>Smart Detection</b>
 <br>AI analyzes target distribution & auto-detects problem type
 </td>
-<td width="25%" align="center">
+<td width="20%" align="center">
 <img src="https://img.icons8.com/fluency/96/module.png" width="64"/>
 <br><b>Adaptive Pipeline</b>
 <br>Preprocessing based on skewness, collinearity, not fixed rules
 </td>
-<td width="25%" align="center">
+<td width="20%" align="center">
 <img src="https://img.icons8.com/fluency/96/engineering.png" width="64"/>
 <br><b>Dynamic Selection</b>
 <br>AI picks 7 best from 21 algorithms based on dataset traits
 </td>
-<td width="25%" align="center">
+<td width="20%" align="center">
 <img src="https://img.icons8.com/fluency/96/google-logo.png" width="64"/>
 <br><b>Gemini AI Explanations</b>
 <br>Natural language reasoning for every decision made
+</td>
+<td width="20%" align="center">
+<img src="https://img.icons8.com/fluency/96/inspection.png" width="64"/>
+<br><b>View Processing Logs</b>
+<br>Complete transparency over every step with real-time logs
 </td>
 </tr>
 </table>
