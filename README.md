@@ -124,6 +124,34 @@ graph TD
 
 ---
 
+
+## 🎯 **What Makes This AI-Powered?**
+
+<table>
+<tr>
+<td width="25%" align="center">
+<img src="https://img.icons8.com/fluency/96/artificial-intelligence.png" width="64"/>
+<br><b>Smart Detection</b>
+<br>AI analyzes target distribution & auto-detects problem type
+</td>
+<td width="25%" align="center">
+<img src="https://img.icons8.com/fluency/96/module.png" width="64"/>
+<br><b>Adaptive Pipeline</b>
+<br>Preprocessing based on skewness, collinearity, not fixed rules
+</td>
+<td width="25%" align="center">
+<img src="https://img.icons8.com/fluency/96/engineering.png" width="64"/>
+<br><b>Dynamic Selection</b>
+<br>AI picks 7 best from 21 algorithms based on dataset traits
+</td>
+<td width="25%" align="center">
+<img src="https://img.icons8.com/fluency/96/google-logo.png" width="64"/>
+<br><b>Gemini AI Explanations</b>
+<br>Natural language reasoning for every decision made
+</td>
+</tr>
+</table>
+
 ## 🎨 **Current Extensions (Already Implemented)**
 
 ### 🚀 **Advanced Context-Aware Selection** *(Prototype Ready)*
